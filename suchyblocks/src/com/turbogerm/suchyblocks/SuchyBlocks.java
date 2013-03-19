@@ -1,66 +1,93 @@
 package com.turbogerm.suchyblocks;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-public class SuchyBlocks implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
-	
-	@Override
-	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
-		
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
-	}
-
-	@Override
-	public void dispose() {
-		batch.dispose();
-		texture.dispose();
-	}
-
-	@Override
-	public void render() {		
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		sprite.draw(batch);
-		batch.end();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.ArrayMap;
+import com.badlogic.gdx.utils.Logger;
+import com.turbogerm.suchyblocks.screens.CreditsScreen;
+import com.turbogerm.suchyblocks.screens.GameOverScreen;
+import com.turbogerm.suchyblocks.screens.HighScoreScreen;
+import com.turbogerm.suchyblocks.screens.MainMenuScreen;
+import com.turbogerm.suchyblocks.screens.PlayScreen;
+import com.turbogerm.suchyblocks.screens.SplashScreen;
+    
+public class SuchyBlocks extends Game {
+    
+    public static final String LOG = SuchyBlocks.class.getSimpleName();
+    
+    public static final String SPLASH_SCREEN_NAME = "Splash";
+    public static final String MAIN_MENU_SCREEN_NAME = "MainMenu";
+    public static final String PLAY_SCREEN_NAME = "Play";
+    public static final String HIGH_SCORE_SCREEN_NAME = "HighScore";
+    public static final String CREDITS_SCREEN_NAME = "Credits";
+    public static final String GAME_OVER_SCREEN_NAME = "GameOver";
+    
+    public static final float VIEWPORT_WIDTH = 450.0f;
+    public static final float VIEWPORT_HEIGHT = 800.0f;
+    
+    //private FPSLogger mFpsLogger;
+    private ArrayMap<String, Screen> mScreens;
+    
+    private Resources mResources;
+    private GameData mGameData;
+    
+    @Override
+    public void create() {
+        
+        //mFpsLogger = new FPSLogger();
+        Gdx.app.setLogLevel(Logger.DEBUG);
+        Gdx.input.setCatchBackKey(true);
+        
+        initializeResourcesAndGameData();
+        initializeScreens();
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        mGameData.dispose();
+        mResources.dispose();
+    }
+    
+    @Override
+    public void render() {
+        //mFpsLogger.log();
+        
+        super.render();
+    }
+    
+    public Screen getScreen(String name) {
+        return mScreens.get(name);
+    }
+    
+    public void setScreen(String name) {
+        setScreen(getScreen(name));
+    }
+    
+    public Resources getResources() {
+        return mResources;
+    }
+    
+    public GameData getGameData() {
+        return mGameData;
+    }
+    
+    private void initializeResourcesAndGameData() {
+        
+        mResources = new Resources();
+        mGameData = new GameData();
+    }
+    
+    private void initializeScreens() {
+        mScreens = new ArrayMap<String, Screen>();
+        mScreens.put(SPLASH_SCREEN_NAME, new SplashScreen(this));
+        mScreens.put(MAIN_MENU_SCREEN_NAME, new MainMenuScreen(this));
+        mScreens.put(PLAY_SCREEN_NAME, new PlayScreen(this));
+        mScreens.put(HIGH_SCORE_SCREEN_NAME, new HighScoreScreen(this));
+        mScreens.put(CREDITS_SCREEN_NAME, new CreditsScreen(this));
+        mScreens.put(GAME_OVER_SCREEN_NAME, new GameOverScreen(this));
+        
+        setScreen(SPLASH_SCREEN_NAME);
+    }
 }
