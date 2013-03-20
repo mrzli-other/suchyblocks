@@ -49,14 +49,14 @@ public final class HighScoreScreen extends ScreenBase {
         mGuiStage.addActor(highScoreLabel);
     }
     
-    private static InputListener getStageInputListener(final HighScoreScreen loseGameScreen) {
+    private static InputListener getStageInputListener(final HighScoreScreen screen) {
         
         return new InputListener() {
             
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
-                    loseGameScreen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
+                    screen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
                     return true;
                 }
                 

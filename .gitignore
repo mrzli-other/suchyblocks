@@ -19,3 +19,6 @@ gen/
 #.classpath
 #.project
 .metadata
+
+#Other
+/rawcontent

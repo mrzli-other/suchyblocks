@@ -49,14 +49,14 @@ public final class CreditsScreen extends ScreenBase {
         mGuiStage.addActor(creditsLabel);
     }
     
-    private static InputListener getStageInputListener(final CreditsScreen loseGameScreen) {
+    private static InputListener getStageInputListener(final CreditsScreen screen) {
         
         return new InputListener() {
             
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
-                    loseGameScreen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
+                    screen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
                     return true;
                 }
                 

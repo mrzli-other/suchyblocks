@@ -23,23 +23,28 @@
  */
 package com.turbogerm.suchyblocks.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.SuchyBlocks;
 
 public final class PlayScreen extends ScreenBase {
     
+    private final GameArea mGameArea;
+    
     public PlayScreen(SuchyBlocks game) {
         super(game);
         
-        mGuiStage.addListener(getStageInputListener());
+        mGuiStage.addListener(getStageInputListener(this));
+        
+        mGameArea = new GameArea(mAssetManager, mBatch);
     }
     
     @Override
     public void show() {
         super.show();
+        mGameArea.reset();
     }
     
     @Override
@@ -49,6 +54,8 @@ public final class PlayScreen extends ScreenBase {
     
     @Override
     public void renderScene(float delta) {
+        mGameArea.update(delta);
+        mGameArea.render();
     }
     
     @Override
@@ -61,13 +68,13 @@ public final class PlayScreen extends ScreenBase {
         super.dispose();
     }
     
-    private InputListener getStageInputListener() {
+    private InputListener getStageInputListener(final PlayScreen screen) {
         return new InputListener() {
             
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
-                    Gdx.app.exit();
+                    screen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
                     return true;
                 }
                 

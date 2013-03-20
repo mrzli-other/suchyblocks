@@ -74,6 +74,9 @@ public abstract class ScreenBase implements Screen {
         mGameData = mGame.getGameData();
         
         mBatch = new SpriteBatch();
+        mBatch.getProjectionMatrix().setToOrtho2D(0.0f, 0.0f,
+                SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
+        
         mGuiStage = new Stage(SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT, false);
     }
     
