@@ -23,6 +23,7 @@
  */
 package com.turbogerm.suchyblocks.screens;
 
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -76,10 +77,73 @@ public final class PlayScreen extends ScreenBase {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
                     screen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
                     return true;
+                } else if (keycode == Keys.UP) {
+                    mGameArea.startRotate();
+                    return true;
+                } else if (keycode == Keys.LEFT) {
+                    mGameArea.startMoveHorizontal(true);
+                    return true;
+                } else if (keycode == Keys.RIGHT) {
+                    mGameArea.startMoveHorizontal(false);
+                    return true;
+                } else if (keycode == Keys.DOWN) {
+                    mGameArea.setSoftDrop(true);
+                    return true;
                 }
                 
                 return false;
             }
+            
+            @Override
+            public boolean keyUp(InputEvent event, int keycode) {
+                if (keycode == Keys.UP) {
+                    mGameArea.endRotate();
+                    return true;
+                } else if (keycode == Keys.LEFT) {
+                    mGameArea.endMoveHorizontal(true);
+                    return true;
+                } else if (keycode == Keys.RIGHT) {
+                    mGameArea.endMoveHorizontal(false);
+                    return true;
+                } else if (keycode == Keys.DOWN) {
+                    mGameArea.setSoftDrop(false);
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (button == Buttons.LEFT) {
+                    //mGameArea.moveHorizontal(-1);
+                    return true;
+                }
+                
+                return false;
+            }
+//            
+//            @Override
+//            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+//                if (mGameAreaLeftPressed) {
+//                    playScreen.mGameMap.changeMapOffset(mLastTouchPoint.x - x, mLastTouchPoint.y - y);
+//                    mLastTouchPoint.x = x;
+//                    mLastTouchPoint.y = y;
+//                    return;
+//                }
+//            }
+//            
+//            @Override
+//            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//                // map movement and tile select should be distinct actions,
+//                // so select tile only if there was no significant map movement
+//                if (Math.abs(x - mInitialTouchPoint.x) < MAP_MOVE_THRESHOLD &&
+//                        Math.abs(y - mInitialTouchPoint.y) < MAP_MOVE_THRESHOLD) {
+//                    playScreen.mGameMap.selectTile(x, y);
+//                }
+//                
+//                mGameAreaLeftPressed = false;
+//            }
         };
     }
 }

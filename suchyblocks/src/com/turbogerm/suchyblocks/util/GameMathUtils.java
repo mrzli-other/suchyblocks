@@ -21,23 +21,15 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-package com.turbogerm.suchyblocks;
+package com.turbogerm.suchyblocks.util;
 
-public final class ResourceNames {
+public final class GameMathUtils {
     
-    public static final String GUI_DIR = "gui/";
-    public static final String GUI_SKIN = GUI_DIR + "uiskin.json";
-    public static final String GUI_SPLASH_TEXTURE = GUI_DIR + "splash.png";
+    public static float getPositiveModulus(float value, float mod) {
+        return ((value % mod) + mod) % mod;
+    }
     
-    public static final String SQUARES_DIR = "squares/";
-    public static final String SQUARES_CYAN_TEXTURE = SQUARES_DIR + "squarecyan.png";
-    public static final String SQUARES_PURPLE_TEXTURE = SQUARES_DIR + "squarepurple.png";
-    public static final String SQUARES_ORANGE_TEXTURE = SQUARES_DIR + "squareorange.png";
-    public static final String SQUARES_BLUE_TEXTURE = SQUARES_DIR + "squareblue.png";
-    public static final String SQUARES_RED_TEXTURE = SQUARES_DIR + "squarered.png";
-    public static final String SQUARES_GREEN_TEXTURE = SQUARES_DIR + "squaregreen.png";
-    public static final String SQUARES_YELLOW_TEXTURE = SQUARES_DIR + "squareyellow.png";
-    
-    public static final String DATA_DIR = "data/";
-    public static final String TETROMINO_ROTATIONS_DATA = DATA_DIR + "tetrominorotations.txt";
+    public static int getPositiveModulus(int value, int mod) {
+        return ((value % mod) + mod) % mod;
+    }
 }
