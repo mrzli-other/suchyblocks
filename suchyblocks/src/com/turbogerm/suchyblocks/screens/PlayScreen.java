@@ -26,10 +26,14 @@ package com.turbogerm.suchyblocks.screens;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
@@ -49,6 +53,10 @@ public final class PlayScreen extends ScreenBase {
     
     private final Vector2 mNextDisplayPosition;
     
+    private final Label mScoreValueLabel;
+    private final Label mLinesValueLabel;
+    private final Label mLevelValueLabel;
+    
     public PlayScreen(SuchyBlocks game) {
         super(game);
         
@@ -64,9 +72,62 @@ public final class PlayScreen extends ScreenBase {
         
         float leftHorizontalSpace = SuchyBlocks.VIEWPORT_WIDTH - mGameAreaRectangle.width -
                 2.0f * GAME_AREA_BORDER_SIZE;
-        float nextDisplayPositionX = SuchyBlocks.VIEWPORT_WIDTH - leftHorizontalSpace / 2.0f - NEXT_DISPLAY_SIZE / 2.0f;
-        float nextDisplayPositionY = mGameAreaRectangle.y + mGameAreaRectangle.height - NEXT_DISPLAY_SIZE;
-        mNextDisplayPosition = new Vector2(nextDisplayPositionX, nextDisplayPositionY);
+        float nextDisplayX = SuchyBlocks.VIEWPORT_WIDTH - leftHorizontalSpace / 2.0f - NEXT_DISPLAY_SIZE / 2.0f;
+        float nextDisplayY = mGameAreaRectangle.y + mGameAreaRectangle.height - NEXT_DISPLAY_SIZE;
+        mNextDisplayPosition = new Vector2(nextDisplayX, nextDisplayY);
+        
+        // labels
+        LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
+        labelStyle.font = mGuiSkin.get("medium-font", BitmapFont.class);
+        
+        final float labelSmallVerticalStride = 30.0f;
+        final float labelLargeVerticalStride = 40.0f;
+        
+        final float labelX = SuchyBlocks.VIEWPORT_WIDTH - leftHorizontalSpace;
+        final float labelWidth = leftHorizontalSpace;
+        final float labelHeight = 24.0f;
+        
+        final float scoreLabelY = nextDisplayY - 80.0f;
+        Label scoreLabel = new Label("SCORE", mGuiSkin);
+        scoreLabel.setBounds(labelX, scoreLabelY, labelWidth, labelHeight);
+        scoreLabel.setStyle(labelStyle);
+        scoreLabel.setAlignment(Align.center);
+        mGuiStage.addActor(scoreLabel);
+        
+        final float scoreValueLabelY = scoreLabelY - labelSmallVerticalStride;
+        mScoreValueLabel = new Label("", mGuiSkin);
+        mScoreValueLabel.setBounds(labelX, scoreValueLabelY, labelWidth, labelHeight);
+        mScoreValueLabel.setStyle(labelStyle);
+        mScoreValueLabel.setAlignment(Align.center);
+        mGuiStage.addActor(mScoreValueLabel);
+        
+        final float linesLabelY = scoreValueLabelY - labelLargeVerticalStride;
+        Label linesLabel = new Label("LINES", mGuiSkin);
+        linesLabel.setBounds(labelX, linesLabelY, labelWidth, labelHeight);
+        linesLabel.setStyle(labelStyle);
+        linesLabel.setAlignment(Align.center);
+        mGuiStage.addActor(linesLabel);
+        
+        final float linesValueLabelY = linesLabelY - labelSmallVerticalStride;
+        mLinesValueLabel = new Label("", mGuiSkin);
+        mLinesValueLabel.setBounds(labelX, linesValueLabelY, labelWidth, labelHeight);
+        mLinesValueLabel.setStyle(labelStyle);
+        mLinesValueLabel.setAlignment(Align.center);
+        mGuiStage.addActor(mLinesValueLabel);
+        
+        final float levelLabelY = linesValueLabelY - labelLargeVerticalStride;
+        Label levelLabel = new Label("LEVEL", mGuiSkin);
+        levelLabel.setBounds(labelX, levelLabelY, labelWidth, labelHeight);
+        levelLabel.setStyle(labelStyle);
+        levelLabel.setAlignment(Align.center);
+        mGuiStage.addActor(levelLabel);
+        
+        final float levelValueLabelY = levelLabelY - labelSmallVerticalStride;
+        mLevelValueLabel = new Label("", mGuiSkin);
+        mLevelValueLabel.setBounds(labelX, levelValueLabelY, labelWidth, labelHeight);
+        mLevelValueLabel.setStyle(labelStyle);
+        mLevelValueLabel.setAlignment(Align.center);
+        mGuiStage.addActor(mLevelValueLabel);
     }
     
     @Override
@@ -83,6 +144,10 @@ public final class PlayScreen extends ScreenBase {
     @Override
     public void renderScene(float delta) {
         mGameArea.update(delta);
+        
+        mScoreValueLabel.setText(String.valueOf(mGameArea.getScore()));
+        mLinesValueLabel.setText(String.valueOf(mGameArea.getLines()));
+        mLevelValueLabel.setText(String.valueOf(mGameArea.getLevel()));
         
         mBatch.begin();
         

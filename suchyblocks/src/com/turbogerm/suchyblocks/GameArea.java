@@ -277,4 +277,16 @@ public final class GameArea {
     public Rectangle getGameAreaRectangle() {
         return mGameAreaRectangle;
     }
+    
+    public int getScore() {
+        return mScore;
+    }
+    
+    public int getLines() {
+        return mLines;
+    }
+    
+    public int getLevel() {
+        return mLevel;
+    }
 }
