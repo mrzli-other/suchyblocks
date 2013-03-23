@@ -37,6 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
+import com.turbogerm.suchyblocks.util.Logger;
 
 public final class PlayScreen extends ScreenBase {
     
@@ -185,6 +186,13 @@ public final class PlayScreen extends ScreenBase {
     private InputListener getStageInputListener(final PlayScreen screen) {
         return new InputListener() {
             
+            private static final float SOFT_DROP_THRESHOLD = 200.0f;
+            private static final float MOVE_THRESHOLD = 10.0f;
+            private static final float HORIZONTAL_MOVE_STEP = 40.0f;
+            
+            private boolean mGameAreaLeftPressed = false;
+            private Vector2 mInitialTouchPoint = new Vector2();
+            
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
@@ -228,35 +236,49 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button == Buttons.LEFT) {
-                    // mGameArea.moveHorizontal(-1);
+                if (button == Buttons.LEFT && mGameArea.getGameAreaRectangle().contains(x, y)) {
+                    mGameAreaLeftPressed = true;
+                    mInitialTouchPoint.set(x, y);
                     return true;
                 }
                 
                 return false;
             }
-            //
-            // @Override
-            // public void touchDragged(InputEvent event, float x, float y, int pointer) {
-            // if (mGameAreaLeftPressed) {
-            // playScreen.mGameMap.changeMapOffset(mLastTouchPoint.x - x, mLastTouchPoint.y - y);
-            // mLastTouchPoint.x = x;
-            // mLastTouchPoint.y = y;
-            // return;
-            // }
-            // }
-            //
-            // @Override
-            // public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            // // map movement and tile select should be distinct actions,
-            // // so select tile only if there was no significant map movement
-            // if (Math.abs(x - mInitialTouchPoint.x) < MAP_MOVE_THRESHOLD &&
-            // Math.abs(y - mInitialTouchPoint.y) < MAP_MOVE_THRESHOLD) {
-            // playScreen.mGameMap.selectTile(x, y);
-            // }
-            //
-            // mGameAreaLeftPressed = false;
-            // }
+            
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                if (mGameAreaLeftPressed) {
+                    Logger.debug("" + x + ", " + y);
+                    return;
+                }
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (mGameAreaLeftPressed) {
+                    float diffX = x - mInitialTouchPoint.x;
+                    float diffY = y - mInitialTouchPoint.y;
+                    float absX = Math.abs(diffX);
+                    float absY = Math.abs(diffY);
+                    
+                    if (absX < MOVE_THRESHOLD && absY < MOVE_THRESHOLD) {
+                        if (mGameArea.isSoftDrop()) {
+                            mGameArea.setSoftDrop(false);
+                        } else {
+                            mGameArea.rotate();
+                        }
+                    } else if (diffY <= -SOFT_DROP_THRESHOLD && absY >= absX) {
+                        mGameArea.setSoftDrop(true);
+                    } else {
+                        int distance = (int)(diffX / HORIZONTAL_MOVE_STEP);
+                        if (distance != 0) {
+                            mGameArea.moveHorizontal(distance);
+                        }
+                    }
+                    
+                    mGameAreaLeftPressed = false;
+                }
+            }
         };
     }
 }

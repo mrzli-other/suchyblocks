@@ -206,7 +206,7 @@ public final class GameArea {
         mRotatingCountdown = 0.0f;
     }
     
-    private void rotate() {
+    public void rotate() {
         if (mActiveTetromino >= 0) {
             getActiveTetromino().rotate(mGameAreaSquares);
         }
@@ -233,7 +233,7 @@ public final class GameArea {
         }
     }
     
-    private void moveHorizontal(int distance) {
+    public void moveHorizontal(int distance) {
         if (mActiveTetromino >= 0) {
             getActiveTetromino().moveHorizontal(distance, mGameAreaSquares);
         }
@@ -288,5 +288,9 @@ public final class GameArea {
     
     public int getLevel() {
         return mLevel;
+    }
+    
+    public boolean isSoftDrop() {
+        return mIsSoftDrop;
     }
 }
