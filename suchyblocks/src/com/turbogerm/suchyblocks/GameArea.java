@@ -29,13 +29,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.turbogerm.suchyblocks.tetrominos.Tetromino;
 import com.turbogerm.suchyblocks.tetrominos.TetrominoRotationsReader;
 import com.turbogerm.suchyblocks.util.IntPair;
 
 public final class GameArea {
     
-    public static final float SQUARE_SIZE = 40.0f;
+    public static final float SQUARE_SIZE = 30.0f;
     public static final int GAME_AREA_ROWS = 20;
     public static final int GAME_AREA_COLUMNS = 10;
     
@@ -45,14 +46,17 @@ public final class GameArea {
     
     private final AssetManager mAssetManager;
     private final SpriteBatch mBatch;
+    private final Vector2 mGameAreaPosition;
+    private final Rectangle mGameAreaRectangle;
     
     private final Texture[] mSquareTextures;
     private final Tetromino[] mTetrominos;
     
+    private final Texture[] mEmtpySquareTextures;
+    
     private int mActiveTetromino;
     
     private final int[][] mGameAreaSquares;
-    private Rectangle mGameAreaRect;
     
     private int mScore;
     private int mLines;
@@ -67,15 +71,17 @@ public final class GameArea {
     private boolean mIsRotating;
     private float mRotatingCountdown;
     private boolean mIsMovingLeft;
-    private float mMovingLeftCountdown; 
+    private float mMovingLeftCountdown;
     private boolean mIsMovingRight;
     private float mMovingRightCountdown;
     
-    public GameArea(AssetManager assetManager, SpriteBatch batch) {
+    public GameArea(AssetManager assetManager, SpriteBatch batch, Vector2 gameAreaPosition) {
         
         mAssetManager = assetManager;
-        
         mBatch = batch;
+        mGameAreaPosition = gameAreaPosition;
+        mGameAreaRectangle = new Rectangle(mGameAreaPosition.x, mGameAreaPosition.y,
+                GAME_AREA_COLUMNS * SQUARE_SIZE, GAME_AREA_ROWS * SQUARE_SIZE);
         
         mSquareTextures = new Texture[Tetromino.COUNT];
         for (int i = 0; i < Tetromino.COUNT; i++) {
@@ -88,6 +94,10 @@ public final class GameArea {
         for (int i = 0; i < Tetromino.COUNT; i++) {
             mTetrominos[i] = new Tetromino(tetrominoRotations[i], mSquareTextures[i], i);
         }
+        
+        mEmtpySquareTextures = new Texture[2];
+        mEmtpySquareTextures[0] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_1_TEXTURE);
+        mEmtpySquareTextures[1] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_2_TEXTURE);
         
         mGameAreaSquares = new int[GAME_AREA_ROWS][GAME_AREA_COLUMNS];
         reset();
@@ -150,25 +160,39 @@ public final class GameArea {
     }
     
     public void render() {
-        mBatch.begin();
-        
         for (int i = 0; i < GAME_AREA_ROWS; i++) {
-            float squareY = i * SQUARE_SIZE;
+            float squareY = i * SQUARE_SIZE + mGameAreaPosition.y;
             for (int j = 0; j < GAME_AREA_COLUMNS; j++) {
                 int squareIndex = mGameAreaSquares[i][j];
+                float squareX = j * SQUARE_SIZE + mGameAreaPosition.x;
                 if (squareIndex >= 0) {
-                    float squareX = j * SQUARE_SIZE;
                     mBatch.draw(mSquareTextures[squareIndex],
+                            squareX, squareY, SQUARE_SIZE, SQUARE_SIZE);
+                } else {
+                    mBatch.draw(mEmtpySquareTextures[(i + j) % 2],
                             squareX, squareY, SQUARE_SIZE, SQUARE_SIZE);
                 }
             }
         }
         
         if (mActiveTetromino >= 0) {
-            getActiveTetromino().render(mBatch);
+            getActiveTetromino().render(mBatch, mGameAreaPosition);
+        }
+    }
+    
+    public void renderNext(Vector2 position, float squareSize) {
+        for (int i = 0; i < 4; i++) {
+            float squareY = i * squareSize + position.y;
+            for (int j = 0; j < 4; j++) {
+                float squareX = j * squareSize + position.x;
+                mBatch.draw(mEmtpySquareTextures[(i + j) % 2],
+                        squareX, squareY, squareSize, squareSize);
+            }
         }
         
-        mBatch.end();
+        if (mNextTetromino >= 0) {
+            getNextTetromino().renderNext(mBatch, position, squareSize);
+        }
     }
     
     public void startRotate() {
@@ -244,5 +268,13 @@ public final class GameArea {
     
     private Tetromino getActiveTetromino() {
         return mTetrominos[mActiveTetromino];
+    }
+    
+    private Tetromino getNextTetromino() {
+        return mTetrominos[mNextTetromino];
+    }
+    
+    public Rectangle getGameAreaRectangle() {
+        return mGameAreaRectangle;
     }
 }

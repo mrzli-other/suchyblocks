@@ -26,6 +26,7 @@ package com.turbogerm.suchyblocks.tetrominos;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.util.ExceptionThrower;
@@ -65,13 +66,22 @@ public final class Tetromino {
         mCurrentRotation = 0;
     }
     
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, Vector2 gameAreaPosition) {
         IntPair[] rotationData = getCurrRotation();
         for (IntPair coord : rotationData) {
-            float squareX = (mCurrentPosition.x + coord.x) * GameArea.SQUARE_SIZE;
-            float squareY = (mCurrentPosition.y + coord.y) * GameArea.SQUARE_SIZE;
+            float squareX = (mCurrentPosition.x + coord.x) * GameArea.SQUARE_SIZE + gameAreaPosition.x;
+            float squareY = (mCurrentPosition.y + coord.y) * GameArea.SQUARE_SIZE + gameAreaPosition.y;
             batch.draw(mSquareTexture,
                     squareX, squareY, GameArea.SQUARE_SIZE, GameArea.SQUARE_SIZE);
+        }
+    }
+    
+    public void renderNext(SpriteBatch batch, Vector2 position, float squareSize) {
+        IntPair[] rotationData = mRotations[0];
+        for (IntPair coord : rotationData) {
+            float squareX = coord.x * squareSize + position.x;
+            float squareY = coord.y * squareSize + position.y;
+            batch.draw(mSquareTexture, squareX, squareY, squareSize, squareSize);
         }
     }
     

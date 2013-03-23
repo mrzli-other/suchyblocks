@@ -44,6 +44,9 @@ public final class Resources {
         textureParameter.genMipMaps = true;
         
         mAssetManager.load(ResourceNames.GUI_SPLASH_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_BACKGROUND_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_GAME_AREA_BORDER_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_GAME_AREA_BACKGROUND_TEXTURE, Texture.class, textureParameter);
         
         mAssetManager.load(ResourceNames.SQUARES_CYAN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.SQUARES_PURPLE_TEXTURE, Texture.class, textureParameter);
@@ -52,6 +55,8 @@ public final class Resources {
         mAssetManager.load(ResourceNames.SQUARES_RED_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.SQUARES_GREEN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.SQUARES_YELLOW_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.SQUARES_EMPTY_1_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.SQUARES_EMPTY_2_TEXTURE, Texture.class, textureParameter);
         
         mAssetManager.finishLoading();
         
