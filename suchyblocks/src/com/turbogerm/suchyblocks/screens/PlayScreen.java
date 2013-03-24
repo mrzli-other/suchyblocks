@@ -32,7 +32,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -41,6 +40,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
+import com.turbogerm.suchyblocks.gui.GameControlButton;
 import com.turbogerm.suchyblocks.util.Logger;
 
 public final class PlayScreen extends ScreenBase {
@@ -63,6 +63,11 @@ public final class PlayScreen extends ScreenBase {
     private final Label mScoreValueLabel;
     private final Label mLinesValueLabel;
     private final Label mLevelValueLabel;
+    
+    private final GameControlButton mLeftButton;
+    private final GameControlButton mRightButton;
+    private final GameControlButton mRotateButton;
+    private final GameControlButton mDownButton;
     
     public PlayScreen(SuchyBlocks game) {
         super(game);
@@ -147,11 +152,11 @@ public final class PlayScreen extends ScreenBase {
         TextureRegion leftDownTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_LEFT_DOWN_TEXTURE));
         Drawable leftDownDrawable = new TextureRegionDrawable(leftDownTextureRegion);
-        ImageButton leftButton = new ImageButton(leftUpDrawable, leftDownDrawable);
-        leftButton.setBounds(CONTROL_BUTTON_PADDING, CONTROL_BUTTON_PADDING,
+        mLeftButton = new GameControlButton(leftUpDrawable, leftDownDrawable);
+        mLeftButton.setBounds(CONTROL_BUTTON_PADDING, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-        leftButton.addListener(getLeftInputListener());
-        mGuiStage.addActor(leftButton);
+        mLeftButton.addListener(getLeftInputListener());
+        mGuiStage.addActor(mLeftButton);
         
         TextureRegion rightUpTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_RIGHT_UP_TEXTURE));
@@ -159,11 +164,11 @@ public final class PlayScreen extends ScreenBase {
         TextureRegion rightDownTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_RIGHT_DOWN_TEXTURE));
         Drawable rightDownDrawable = new TextureRegionDrawable(rightDownTextureRegion);
-        ImageButton rightButton = new ImageButton(rightUpDrawable, rightDownDrawable);
-        rightButton.setBounds(CONTROL_BUTTON_PADDING + 3.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+        mRightButton = new GameControlButton(rightUpDrawable, rightDownDrawable);
+        mRightButton.setBounds(CONTROL_BUTTON_PADDING + 3.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-        rightButton.addListener(getRightInputListener());
-        mGuiStage.addActor(rightButton);
+        mRightButton.addListener(getRightInputListener());
+        mGuiStage.addActor(mRightButton);
         
         TextureRegion rotateUpTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_ROTATE_UP_TEXTURE));
@@ -171,11 +176,11 @@ public final class PlayScreen extends ScreenBase {
         TextureRegion rotateDownTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_ROTATE_DOWN_TEXTURE));
         Drawable rotateDownDrawable = new TextureRegionDrawable(rotateDownTextureRegion);
-        ImageButton rotateButton = new ImageButton(rotateUpDrawable, rotateDownDrawable);
-        rotateButton.setBounds(CONTROL_BUTTON_PADDING + 1.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+        mRotateButton = new GameControlButton(rotateUpDrawable, rotateDownDrawable);
+        mRotateButton.setBounds(CONTROL_BUTTON_PADDING + 1.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-        rotateButton.addListener(getRotateInputListener());
-        mGuiStage.addActor(rotateButton);
+        mRotateButton.addListener(getRotateInputListener());
+        mGuiStage.addActor(mRotateButton);
         
         TextureRegion downUpTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_DOWN_UP_TEXTURE));
@@ -183,11 +188,11 @@ public final class PlayScreen extends ScreenBase {
         TextureRegion downDownTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_DOWN_DOWN_TEXTURE));
         Drawable downDownDrawable = new TextureRegionDrawable(downDownTextureRegion);
-        ImageButton downButton = new ImageButton(downUpDrawable, downDownDrawable);
-        downButton.setBounds(CONTROL_BUTTON_PADDING + 2.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+        mDownButton = new GameControlButton(downUpDrawable, downDownDrawable);
+        mDownButton.setBounds(CONTROL_BUTTON_PADDING + 2.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-        downButton.addListener(getDownInputListener());
-        mGuiStage.addActor(downButton);
+        mDownButton.addListener(getDownInputListener());
+        mGuiStage.addActor(mDownButton);
     }
     
     @Override
@@ -259,15 +264,19 @@ public final class PlayScreen extends ScreenBase {
                     return true;
                 } else if (keycode == Keys.UP) {
                     mGameArea.startRotate();
+                    mRotateButton.setDisplayPressed(true);
                     return true;
                 } else if (keycode == Keys.LEFT) {
                     mGameArea.startMoveHorizontal(true);
+                    mLeftButton.setDisplayPressed(true);
                     return true;
                 } else if (keycode == Keys.RIGHT) {
                     mGameArea.startMoveHorizontal(false);
+                    mRightButton.setDisplayPressed(true);
                     return true;
                 } else if (keycode == Keys.DOWN) {
                     mGameArea.setSoftDrop(true);
+                    mDownButton.setDisplayPressed(true);
                     return true;
                 }
                 
@@ -278,15 +287,19 @@ public final class PlayScreen extends ScreenBase {
             public boolean keyUp(InputEvent event, int keycode) {
                 if (keycode == Keys.UP) {
                     mGameArea.endRotate();
+                    mRotateButton.setDisplayPressed(false);
                     return true;
                 } else if (keycode == Keys.LEFT) {
                     mGameArea.endMoveHorizontal(true);
+                    mLeftButton.setDisplayPressed(false);
                     return true;
                 } else if (keycode == Keys.RIGHT) {
                     mGameArea.endMoveHorizontal(false);
+                    mRightButton.setDisplayPressed(false);
                     return true;
                 } else if (keycode == Keys.DOWN) {
                     mGameArea.setSoftDrop(false);
+                    mDownButton.setDisplayPressed(false);
                     return true;
                 }
                 
