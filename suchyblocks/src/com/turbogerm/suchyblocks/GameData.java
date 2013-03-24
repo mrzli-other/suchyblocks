@@ -25,9 +25,20 @@ package com.turbogerm.suchyblocks;
 
 public final class GameData {
     
+    private int mScore;
+    
     public GameData() {
+        mScore = 0;
     }
     
     public void dispose() {
+    }
+    
+    public int getScore() {
+        return mScore;
+    }
+    
+    public void setScore(int score) {
+        mScore = score;
     }
 }

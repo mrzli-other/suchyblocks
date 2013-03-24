@@ -42,7 +42,8 @@ public final class GameOverScreen extends ScreenBase {
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
         labelStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class);
         
-        Label gameOverLabel = new Label("Game over!", mGuiSkin);
+        String gameOverText = String.format("Game over!\nYour score is:\n%d", mGameData.getScore());
+        Label gameOverLabel = new Label(gameOverText, mGuiSkin);
         gameOverLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
         gameOverLabel.setStyle(labelStyle);
         gameOverLabel.setAlignment(Align.center);

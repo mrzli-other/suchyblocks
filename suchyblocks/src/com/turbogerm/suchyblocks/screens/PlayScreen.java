@@ -209,6 +209,7 @@ public final class PlayScreen extends ScreenBase {
     public void renderScene(float delta) {
         
         if (mGameArea.isGameOver()) {
+            mGameData.setScore(mGameArea.getScore());
             mGame.setScreen(SuchyBlocks.GAME_OVER_SCREEN_NAME);
         }
         
