@@ -47,6 +47,14 @@ public final class Resources {
         mAssetManager.load(ResourceNames.GUI_BACKGROUND_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_GAME_AREA_BORDER_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_GAME_AREA_BACKGROUND_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_LEFT_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_LEFT_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_RIGHT_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_RIGHT_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_DOWN_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_DOWN_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_ROTATE_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_ROTATE_DOWN_TEXTURE, Texture.class, textureParameter);
         
         mAssetManager.load(ResourceNames.SQUARES_CYAN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.SQUARES_PURPLE_TEXTURE, Texture.class, textureParameter);

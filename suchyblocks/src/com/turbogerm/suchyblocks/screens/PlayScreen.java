@@ -27,13 +27,17 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
@@ -42,6 +46,8 @@ import com.turbogerm.suchyblocks.util.Logger;
 public final class PlayScreen extends ScreenBase {
     
     private static final float GAME_AREA_BORDER_SIZE = 10.0f;
+    private static final float CONTROL_BUTTON_SIZE = 100.0f;
+    private static final float CONTROL_BUTTON_PADDING = 10.0f;
     private static final float NEXT_SQUARE_SIZE = 20.0f;
     private static final float NEXT_DISPLAY_SIZE = NEXT_SQUARE_SIZE * 4.0f;
     
@@ -63,7 +69,9 @@ public final class PlayScreen extends ScreenBase {
         
         mGuiStage.addListener(getStageInputListener(this));
         
-        Vector2 gameAreaPosition = new Vector2(GAME_AREA_BORDER_SIZE, 100.0f - GAME_AREA_BORDER_SIZE);
+        Vector2 gameAreaPosition = new Vector2(
+                GAME_AREA_BORDER_SIZE,
+                CONTROL_BUTTON_SIZE + 2.0f * CONTROL_BUTTON_PADDING + GAME_AREA_BORDER_SIZE);
         mGameArea = new GameArea(mAssetManager, mBatch, gameAreaPosition);
         mGameAreaRectangle = mGameArea.getGameAreaRectangle();
         
@@ -129,6 +137,57 @@ public final class PlayScreen extends ScreenBase {
         mLevelValueLabel.setStyle(labelStyle);
         mLevelValueLabel.setAlignment(Align.center);
         mGuiStage.addActor(mLevelValueLabel);
+        
+        // control buttons
+        final float controlButtonStride = CONTROL_BUTTON_SIZE + CONTROL_BUTTON_PADDING;
+        
+        TextureRegion leftUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_LEFT_UP_TEXTURE));
+        Drawable leftUpDrawable = new TextureRegionDrawable(leftUpTextureRegion);
+        TextureRegion leftDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_LEFT_DOWN_TEXTURE));
+        Drawable leftDownDrawable = new TextureRegionDrawable(leftDownTextureRegion);
+        ImageButton leftButton = new ImageButton(leftUpDrawable, leftDownDrawable);
+        leftButton.setBounds(CONTROL_BUTTON_PADDING, CONTROL_BUTTON_PADDING,
+                CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+        leftButton.addListener(getLeftInputListener());
+        mGuiStage.addActor(leftButton);
+        
+        TextureRegion rightUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_RIGHT_UP_TEXTURE));
+        Drawable rightUpDrawable = new TextureRegionDrawable(rightUpTextureRegion);
+        TextureRegion rightDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_RIGHT_DOWN_TEXTURE));
+        Drawable rightDownDrawable = new TextureRegionDrawable(rightDownTextureRegion);
+        ImageButton rightButton = new ImageButton(rightUpDrawable, rightDownDrawable);
+        rightButton.setBounds(CONTROL_BUTTON_PADDING + 3.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+                CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+        rightButton.addListener(getRightInputListener());
+        mGuiStage.addActor(rightButton);
+        
+        TextureRegion rotateUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_ROTATE_UP_TEXTURE));
+        Drawable rotateUpDrawable = new TextureRegionDrawable(rotateUpTextureRegion);
+        TextureRegion rotateDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_ROTATE_DOWN_TEXTURE));
+        Drawable rotateDownDrawable = new TextureRegionDrawable(rotateDownTextureRegion);
+        ImageButton rotateButton = new ImageButton(rotateUpDrawable, rotateDownDrawable);
+        rotateButton.setBounds(CONTROL_BUTTON_PADDING + 1.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+                CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+        rotateButton.addListener(getRotateInputListener());
+        mGuiStage.addActor(rotateButton);
+        
+        TextureRegion downUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_DOWN_UP_TEXTURE));
+        Drawable downUpDrawable = new TextureRegionDrawable(downUpTextureRegion);
+        TextureRegion downDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_DOWN_DOWN_TEXTURE));
+        Drawable downDownDrawable = new TextureRegionDrawable(downDownTextureRegion);
+        ImageButton downButton = new ImageButton(downUpDrawable, downDownDrawable);
+        downButton.setBounds(CONTROL_BUTTON_PADDING + 2.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+                CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+        downButton.addListener(getDownInputListener());
+        mGuiStage.addActor(downButton);
     }
     
     @Override
@@ -270,7 +329,7 @@ public final class PlayScreen extends ScreenBase {
                     } else if (diffY <= -SOFT_DROP_THRESHOLD && absY >= absX) {
                         mGameArea.setSoftDrop(true);
                     } else {
-                        int distance = (int)(diffX / HORIZONTAL_MOVE_STEP);
+                        int distance = (int) (diffX / HORIZONTAL_MOVE_STEP);
                         if (distance != 0) {
                             mGameArea.moveHorizontal(distance);
                         }
@@ -278,6 +337,70 @@ public final class PlayScreen extends ScreenBase {
                     
                     mGameAreaLeftPressed = false;
                 }
+            }
+        };
+    }
+    
+    private InputListener getLeftInputListener() {
+        return new InputListener() {
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.startMoveHorizontal(true);
+                return true;
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.endMoveHorizontal(true);
+            }
+        };
+    }
+    
+    private InputListener getRightInputListener() {
+        return new InputListener() {
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.startMoveHorizontal(false);
+                return true;
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.endMoveHorizontal(false);
+            }
+        };
+    }
+    
+    private InputListener getDownInputListener() {
+        return new InputListener() {
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.setSoftDrop(true);
+                return true;
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.setSoftDrop(false);
+            }
+        };
+    }
+    
+    private InputListener getRotateInputListener() {
+        return new InputListener() {
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.startRotate();
+                return true;
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                mGameArea.endRotate();
             }
         };
     }

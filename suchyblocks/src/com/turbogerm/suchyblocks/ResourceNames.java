@@ -31,6 +31,14 @@ public final class ResourceNames {
     public static final String GUI_BACKGROUND_TEXTURE = GUI_DIR + "background.png";
     public static final String GUI_GAME_AREA_BORDER_TEXTURE = GUI_DIR + "gameareaborder.png";
     public static final String GUI_GAME_AREA_BACKGROUND_TEXTURE = GUI_DIR + "gameareabackground.png";
+    public static final String GUI_LEFT_UP_TEXTURE = GUI_DIR + "leftup.png";
+    public static final String GUI_LEFT_DOWN_TEXTURE = GUI_DIR + "leftdown.png";
+    public static final String GUI_RIGHT_UP_TEXTURE = GUI_DIR + "rightup.png";
+    public static final String GUI_RIGHT_DOWN_TEXTURE = GUI_DIR + "rightdown.png";
+    public static final String GUI_DOWN_UP_TEXTURE = GUI_DIR + "downup.png";
+    public static final String GUI_DOWN_DOWN_TEXTURE = GUI_DIR + "downdown.png";
+    public static final String GUI_ROTATE_UP_TEXTURE = GUI_DIR + "rotateup.png";
+    public static final String GUI_ROTATE_DOWN_TEXTURE = GUI_DIR + "rotatedown.png";
     
     public static final String SQUARES_DIR = "squares/";
     public static final String SQUARES_CYAN_TEXTURE = SQUARES_DIR + "squarecyan.png";
