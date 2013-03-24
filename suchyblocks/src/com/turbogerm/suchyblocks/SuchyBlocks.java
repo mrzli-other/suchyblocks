@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
-import com.turbogerm.suchyblocks.screens.CreditsScreen;
+import com.turbogerm.suchyblocks.screens.InfoScreen;
 import com.turbogerm.suchyblocks.screens.GameOverScreen;
 import com.turbogerm.suchyblocks.screens.HighScoreScreen;
 import com.turbogerm.suchyblocks.screens.MainMenuScreen;
@@ -20,7 +20,7 @@ public class SuchyBlocks extends Game {
     public static final String MAIN_MENU_SCREEN_NAME = "MainMenu";
     public static final String PLAY_SCREEN_NAME = "Play";
     public static final String HIGH_SCORE_SCREEN_NAME = "HighScore";
-    public static final String CREDITS_SCREEN_NAME = "Credits";
+    public static final String INFO_SCREEN_NAME = "Info";
     public static final String GAME_OVER_SCREEN_NAME = "GameOver";
     
     public static final float VIEWPORT_WIDTH = 450.0f;
@@ -85,7 +85,7 @@ public class SuchyBlocks extends Game {
         mScreens.put(MAIN_MENU_SCREEN_NAME, new MainMenuScreen(this));
         mScreens.put(PLAY_SCREEN_NAME, new PlayScreen(this));
         mScreens.put(HIGH_SCORE_SCREEN_NAME, new HighScoreScreen(this));
-        mScreens.put(CREDITS_SCREEN_NAME, new CreditsScreen(this));
+        mScreens.put(INFO_SCREEN_NAME, new InfoScreen(this));
         mScreens.put(GAME_OVER_SCREEN_NAME, new GameOverScreen(this));
         
         setScreen(SPLASH_SCREEN_NAME);

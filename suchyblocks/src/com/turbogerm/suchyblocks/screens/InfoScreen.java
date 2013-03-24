@@ -32,9 +32,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.turbogerm.suchyblocks.SuchyBlocks;
 
-public final class CreditsScreen extends ScreenBase {
+public final class InfoScreen extends ScreenBase {
     
-    public CreditsScreen(SuchyBlocks game) {
+    public InfoScreen(SuchyBlocks game) {
         super(game);
         
         mGuiStage.addListener(getStageInputListener(this));
@@ -42,14 +42,14 @@ public final class CreditsScreen extends ScreenBase {
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
         labelStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class);
         
-        Label creditsLabel = new Label("CREDITS", mGuiSkin);
-        creditsLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
-        creditsLabel.setStyle(labelStyle);
-        creditsLabel.setAlignment(Align.center);
-        mGuiStage.addActor(creditsLabel);
+        Label infoLabel = new Label("INFO", mGuiSkin);
+        infoLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
+        infoLabel.setStyle(labelStyle);
+        infoLabel.setAlignment(Align.center);
+        mGuiStage.addActor(infoLabel);
     }
     
-    private static InputListener getStageInputListener(final CreditsScreen screen) {
+    private static InputListener getStageInputListener(final InfoScreen screen) {
         
         return new InputListener() {
             

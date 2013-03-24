@@ -56,9 +56,9 @@ public final class MainMenuScreen extends ScreenBase {
         highScoreButton.setStyle(menuTextButtonStyle);
         highScoreButton.addListener(getHighScoreListener(highScoreButton));
         
-        TextButton creditsButton = new TextButton("CREDITS", mGuiSkin);
-        creditsButton.setStyle(menuTextButtonStyle);
-        creditsButton.addListener(getCreditsListener(creditsButton));
+        TextButton infoButton = new TextButton("INFO", mGuiSkin);
+        infoButton.setStyle(menuTextButtonStyle);
+        infoButton.addListener(getCreditsListener(infoButton));
         
         Table table = new Table();
         table.setFillParent(true);
@@ -66,7 +66,7 @@ public final class MainMenuScreen extends ScreenBase {
         table.row();
         table.add(highScoreButton).width(BUTTON_WIDTH).height(BUTTON_HEIGHT).padBottom(BUTTON_PADDING);
         table.row();
-        table.add(creditsButton).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
+        table.add(infoButton).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         
         mGuiStage.addActor(table);
     }
@@ -131,7 +131,7 @@ public final class MainMenuScreen extends ScreenBase {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (actor.hit(x, y, true) != null) {
-                    mGame.setScreen(SuchyBlocks.CREDITS_SCREEN_NAME);
+                    mGame.setScreen(SuchyBlocks.INFO_SCREEN_NAME);
                 }
             }
         };
