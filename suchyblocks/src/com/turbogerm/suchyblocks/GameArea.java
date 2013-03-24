@@ -30,6 +30,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.IntArray;
 import com.turbogerm.suchyblocks.tetrominos.Tetromino;
 import com.turbogerm.suchyblocks.tetrominos.TetrominoRotationsReader;
 import com.turbogerm.suchyblocks.util.IntPair;
@@ -40,9 +41,11 @@ public final class GameArea {
     public static final int GAME_AREA_ROWS = 20;
     public static final int GAME_AREA_COLUMNS = 10;
     
-    private static final float SOFT_DROP_SPEED = 20.0f;
+    private static final float SOFT_DROP_SPEED = 30.0f;
     private static final float REPEAT_START_OFFSET = 0.5f;
     private static final float REPEAT_INTERVAL = 0.05f;
+    
+    private static final int LINES_TO_REMOVE_CAPACITY = 5;
     
     private final AssetManager mAssetManager;
     private final SpriteBatch mBatch;
@@ -77,6 +80,8 @@ public final class GameArea {
     
     private boolean mIsGameOver;
     
+    private final IntArray mLinesToRemove;
+    
     public GameArea(AssetManager assetManager, SpriteBatch batch, Vector2 gameAreaPosition) {
         
         mAssetManager = assetManager;
@@ -102,6 +107,9 @@ public final class GameArea {
         mEmtpySquareTextures[1] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_2_TEXTURE);
         
         mGameAreaSquares = new int[GAME_AREA_ROWS][GAME_AREA_COLUMNS];
+        
+        mLinesToRemove = new IntArray(false, LINES_TO_REMOVE_CAPACITY);
+        
         reset();
     }
     
@@ -160,6 +168,8 @@ public final class GameArea {
                     mIsGameOver = true;
                     return;
                 }
+                addDropScore();
+                removeLines();
             }
             
             mDistanceRemainder -= distance;
@@ -250,13 +260,29 @@ public final class GameArea {
         mIsSoftDrop = isSoftDrop;
     }
     
+    private void addLinesClearScore(int lines) {
+        float scoreMultiplier = 1.0f + (lines - 1) * 0.5f;
+        int change = (int)((mLevel + 9) * 5.0f * scoreMultiplier);
+        mScore += change;
+    }
+    
+    private void addDropScore() {
+        int change = (int)((mLevel + 9) * 1.0f);
+        mScore += change;
+    }
+    
+    private void addLines(int change) {
+        setLines(mLines + change);
+    }
+    
     private void setLines(int lines) {
         mLines = lines;
         mLevel = 1 + mLines / 10;
         mSpeed = 2.0f + (mLevel - 1) * 0.5f;
+        mSpeed = Math.min(mSpeed, SOFT_DROP_SPEED);
     }
     
-    public void nextTetromino() {
+    private void nextTetromino() {
         mIsSoftDrop = false;
         
         endRotate();
@@ -271,6 +297,52 @@ public final class GameArea {
         mActiveTetromino = mNextTetromino;
         mDistanceRemainder = 0.0f;
         mNextTetromino = MathUtils.random(Tetromino.COUNT - 1);
+    }
+    
+    private void removeLines() {
+        mLinesToRemove.clear();
+        
+        for (int i = 0; i < GAME_AREA_ROWS; i++) {
+            if (isRowFull(i)) {
+                mLinesToRemove.add(i);
+            }
+        }
+        
+        int lineCount = mLinesToRemove.size;
+        if (lineCount == 0) {
+            return;
+        }
+        
+        mLinesToRemove.add(GAME_AREA_ROWS);
+        for (int lineIndex = 0; lineIndex < mLinesToRemove.size - 1; lineIndex++) {
+            int startRow = mLinesToRemove.items[lineIndex] - lineIndex;
+            int endRow = mLinesToRemove.items[lineIndex + 1] - 1 - lineIndex;
+            int rowFall = lineIndex + 1;
+            for (int i = startRow; i <= endRow; i++) {
+                if (i < GAME_AREA_ROWS - rowFall) {
+                    for (int j = 0; j < GAME_AREA_COLUMNS; j++) {
+                        mGameAreaSquares[i][j] = mGameAreaSquares[i + rowFall][j];
+                    }
+                } else {
+                    for (int j = 0; j < GAME_AREA_COLUMNS; j++) {
+                        mGameAreaSquares[i][j] = -1;
+                    }
+                }
+            }
+        }
+        
+        addLinesClearScore(lineCount);
+        addLines(lineCount);
+    }
+    
+    private boolean isRowFull(int row) {
+        for (int j = 0; j < GAME_AREA_COLUMNS; j++) {
+            if (mGameAreaSquares[row][j] < 0) {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     private Tetromino getActiveTetromino() {

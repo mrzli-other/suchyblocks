@@ -34,6 +34,8 @@ import com.turbogerm.suchyblocks.SuchyBlocks;
 
 public final class GameOverScreen extends ScreenBase {
     
+    private final Label mGameOverLabel;
+    
     public GameOverScreen(SuchyBlocks game) {
         super(game);
         
@@ -42,12 +44,19 @@ public final class GameOverScreen extends ScreenBase {
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
         labelStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class);
         
+        mGameOverLabel = new Label("", mGuiSkin);
+        mGameOverLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
+        mGameOverLabel.setStyle(labelStyle);
+        mGameOverLabel.setAlignment(Align.center);
+        mGuiStage.addActor(mGameOverLabel);
+    }
+    
+    @Override
+    public void show() {
+        super.show();
+        
         String gameOverText = String.format("Game over!\nYour score is:\n%d", mGameData.getScore());
-        Label gameOverLabel = new Label(gameOverText, mGuiSkin);
-        gameOverLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
-        gameOverLabel.setStyle(labelStyle);
-        gameOverLabel.setAlignment(Align.center);
-        mGuiStage.addActor(gameOverLabel);
+        mGameOverLabel.setText(gameOverText);
     }
     
     private static InputListener getStageInputListener(final GameOverScreen loseGameScreen) {
