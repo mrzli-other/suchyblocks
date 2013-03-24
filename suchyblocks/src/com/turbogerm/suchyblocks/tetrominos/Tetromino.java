@@ -216,6 +216,10 @@ public final class Tetromino {
         return canMove;
     }
     
+    public boolean isValidPosition(int[][] gameAreaSquares) {
+        return isValidPosition(getCurrRotation(), mCurrentPosition, gameAreaSquares);
+    }
+    
     private static boolean isValidPosition(IntPair[] rotationData, IntPair position, int[][] gameAreaSquares) {
         for (IntPair coord : rotationData) {
             if (!isValidCoordinate(

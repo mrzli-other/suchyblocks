@@ -41,7 +41,6 @@ import com.turbogerm.suchyblocks.GameArea;
 import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
 import com.turbogerm.suchyblocks.gui.GameControlButton;
-import com.turbogerm.suchyblocks.util.Logger;
 
 public final class PlayScreen extends ScreenBase {
     
@@ -72,7 +71,7 @@ public final class PlayScreen extends ScreenBase {
     public PlayScreen(SuchyBlocks game) {
         super(game);
         
-        mGuiStage.addListener(getStageInputListener(this));
+        mGuiStage.addListener(getStageInputListener());
         
         Vector2 gameAreaPosition = new Vector2(
                 GAME_AREA_BORDER_SIZE,
@@ -208,6 +207,11 @@ public final class PlayScreen extends ScreenBase {
     
     @Override
     public void renderScene(float delta) {
+        
+        if (mGameArea.isGameOver()) {
+            mGame.setScreen(SuchyBlocks.GAME_OVER_SCREEN_NAME);
+        }
+        
         mGameArea.update(delta);
         
         mScoreValueLabel.setText(String.valueOf(mGameArea.getScore()));
@@ -247,7 +251,7 @@ public final class PlayScreen extends ScreenBase {
         super.dispose();
     }
     
-    private InputListener getStageInputListener(final PlayScreen screen) {
+    private InputListener getStageInputListener() {
         return new InputListener() {
             
             private static final float SOFT_DROP_THRESHOLD = 200.0f;
@@ -260,7 +264,7 @@ public final class PlayScreen extends ScreenBase {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
-                    screen.mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
+                    mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
                     return true;
                 } else if (keycode == Keys.UP) {
                     mGameArea.startRotate();
@@ -320,7 +324,6 @@ public final class PlayScreen extends ScreenBase {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 if (mGameAreaLeftPressed) {
-                    Logger.debug("" + x + ", " + y);
                     return;
                 }
             }

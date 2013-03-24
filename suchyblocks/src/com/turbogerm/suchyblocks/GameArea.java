@@ -75,6 +75,8 @@ public final class GameArea {
     private boolean mIsMovingRight;
     private float mMovingRightCountdown;
     
+    private boolean mIsGameOver;
+    
     public GameArea(AssetManager assetManager, SpriteBatch batch, Vector2 gameAreaPosition) {
         
         mAssetManager = assetManager;
@@ -116,6 +118,7 @@ public final class GameArea {
         
         mNextTetromino = MathUtils.random(Tetromino.COUNT - 1);
         mActiveTetromino = -1;
+        mIsGameOver = false;
         
         nextTetromino();
     }
@@ -153,6 +156,10 @@ public final class GameArea {
             
             if (!getActiveTetromino().moveDown(distance, mGameAreaSquares)) {
                 nextTetromino();
+                if (!getActiveTetromino().isValidPosition(mGameAreaSquares)) {
+                    mIsGameOver = true;
+                    return;
+                }
             }
             
             mDistanceRemainder -= distance;
@@ -292,5 +299,9 @@ public final class GameArea {
     
     public boolean isSoftDrop() {
         return mIsSoftDrop;
+    }
+    
+    public boolean isGameOver() {
+        return mIsGameOver;
     }
 }
