@@ -313,10 +313,14 @@ public final class GameArea {
             return;
         }
         
-        mLinesToRemove.add(GAME_AREA_ROWS);
-        for (int lineIndex = 0; lineIndex < mLinesToRemove.size - 1; lineIndex++) {
+        for (int lineIndex = 0; lineIndex < mLinesToRemove.size; lineIndex++) {
             int startRow = mLinesToRemove.items[lineIndex] - lineIndex;
-            int endRow = mLinesToRemove.items[lineIndex + 1] - 1 - lineIndex;
+            int endRow;
+            if (lineIndex < mLinesToRemove.size - 1) {
+                endRow = mLinesToRemove.items[lineIndex + 1] - 1 - lineIndex;
+            } else {
+                endRow = GAME_AREA_ROWS - 1;
+            }
             int rowFall = lineIndex + 1;
             for (int i = startRow; i <= endRow; i++) {
                 if (i < GAME_AREA_ROWS - rowFall) {
