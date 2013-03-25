@@ -25,14 +25,18 @@ package com.turbogerm.suchyblocks.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
+import com.turbogerm.suchyblocks.util.Logger;
 
 public final class MainMenuScreen extends ScreenBase {
     
@@ -43,17 +47,30 @@ public final class MainMenuScreen extends ScreenBase {
     public MainMenuScreen(SuchyBlocks game) {
         super(game);
         
+        long nanoTime1 = System.nanoTime();
+        
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(ResourceNames.ARIAL_BOLD_FONT));
+        BitmapFont font15 = generator.generateFont(15);
+        BitmapFont font22 = generator.generateFont(40);
+        font22.setColor(Color.BLACK);
+        generator.dispose();
+        
+        float elapsed = (float)(System.nanoTime() - nanoTime1) / 1e9f;
+        Logger.info("************************* TIME ELAPSED: " + String.valueOf(elapsed));
+        
         mGuiStage.addListener(getStageInputListener());
         
         TextButtonStyle menuTextButtonStyle = new TextButtonStyle(mGuiSkin.get(TextButtonStyle.class));
-        menuTextButtonStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class);
+        menuTextButtonStyle.font = font22;
+        TextButtonStyle menuTextButtonStyle2 = new TextButtonStyle(mGuiSkin.get(TextButtonStyle.class));
+        menuTextButtonStyle2.font = mGuiSkin.get("xxxl-font", BitmapFont.class);
         
-        TextButton startButton = new TextButton("START", mGuiSkin);
+        TextButton startButton = new TextButton("HIGH SCORE", mGuiSkin);
         startButton.setStyle(menuTextButtonStyle);
         startButton.addListener(getStartInputListener(startButton));
         
         TextButton highScoreButton = new TextButton("HIGH SCORE", mGuiSkin);
-        highScoreButton.setStyle(menuTextButtonStyle);
+        highScoreButton.setStyle(menuTextButtonStyle2);
         highScoreButton.addListener(getHighScoreListener(highScoreButton));
         
         TextButton infoButton = new TextButton("INFO", mGuiSkin);

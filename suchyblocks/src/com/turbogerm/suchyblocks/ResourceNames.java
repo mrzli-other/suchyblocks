@@ -40,6 +40,9 @@ public final class ResourceNames {
     public static final String GUI_ROTATE_UP_TEXTURE = GUI_DIR + "rotateup.png";
     public static final String GUI_ROTATE_DOWN_TEXTURE = GUI_DIR + "rotatedown.png";
     
+    public static final String FONTS_DIR = GUI_DIR + "fonts/";
+    public static final String ARIAL_BOLD_FONT = FONTS_DIR + "arialbd.ttf";
+    
     public static final String SQUARES_DIR = "squares/";
     public static final String SQUARES_CYAN_TEXTURE = SQUARES_DIR + "squarecyan.png";
     public static final String SQUARES_PURPLE_TEXTURE = SQUARES_DIR + "squarepurple.png";
