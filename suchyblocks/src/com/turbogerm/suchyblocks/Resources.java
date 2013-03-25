@@ -28,12 +28,16 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public final class Resources {
     
     private AssetManager mAssetManager;
     private Skin mGuiSkin;
+    private ObjectMap<String, BitmapFont> mFonts;
     
     public Resources() {
         mAssetManager = new AssetManager();
@@ -69,10 +73,25 @@ public final class Resources {
         mAssetManager.finishLoading();
         
         mGuiSkin = new Skin(Gdx.files.internal(ResourceNames.GUI_SKIN));
+        
+        mFonts = new ObjectMap<String, BitmapFont>();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(ResourceNames.ARIAL_BOLD_FONT));
+        mFonts.put("default", generator.generateFont(14));
+        mFonts.put("small", generator.generateFont(12));
+        mFonts.put("medium", generator.generateFont(18));
+        mFonts.put("large", generator.generateFont(24));
+        mFonts.put("xl", generator.generateFont(32));
+        mFonts.put("xxl", generator.generateFont(40));
+        mFonts.put("xxxl", generator.generateFont(48));
+        generator.dispose();
     }
     
     public Skin getGuiSkin() {
         return mGuiSkin;
+    }
+    
+    public BitmapFont getFont(String name) {
+        return mFonts.get(name);
     }
     
     public AssetManager getAssetManager() {

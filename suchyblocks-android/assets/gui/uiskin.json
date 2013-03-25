@@ -1,12 +1,6 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-    default-font: { file: fonts/arial-bold-14.fnt },
-    small-font: { file: fonts/arial-bold-12.fnt },
-    medium-font: { file: fonts/arial-bold-18.fnt },
-    large-font: { file: fonts/arial-bold-24.fnt },
-    xl-font: { file: fonts/arial-bold-32.fnt },
-    xxl-font: { file: fonts/arial-bold-40.fnt },
-    xxxl-font: { file: fonts/arial-bold-48.fnt },
+    default-font: { file: fonts/arial-bold-14.fnt }
 },
 com.badlogic.gdx.graphics.Color: {
 	green: { a: 1, b: 0, g: 1, r: 0 },

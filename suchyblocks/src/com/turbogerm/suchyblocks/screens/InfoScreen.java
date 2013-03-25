@@ -24,7 +24,6 @@
 package com.turbogerm.suchyblocks.screens;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -40,7 +39,7 @@ public final class InfoScreen extends ScreenBase {
         mGuiStage.addListener(getStageInputListener(this));
         
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
-        labelStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class);
+        labelStyle.font = mResources.getFont("xxxl");
         
         Label infoLabel = new Label("INFO", mGuiSkin);
         infoLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);

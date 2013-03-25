@@ -26,7 +26,6 @@ package com.turbogerm.suchyblocks.screens;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -91,7 +90,7 @@ public final class PlayScreen extends ScreenBase {
         
         // labels
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
-        labelStyle.font = mGuiSkin.get("medium-font", BitmapFont.class);
+        labelStyle.font = mResources.getFont("medium");
         
         final float labelSmallVerticalStride = 30.0f;
         final float labelLargeVerticalStride = 40.0f;
