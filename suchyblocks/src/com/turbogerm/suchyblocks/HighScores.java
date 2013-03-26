@@ -26,11 +26,10 @@ package com.turbogerm.suchyblocks;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
-import com.turbogerm.suchyblocks.util.Logger;
 
 public final class HighScores {
     
-    private static final String PREFERENCES_NAME = "HighScores";
+    private static final String PREFERENCES_NAME = "SuchyBlocks_HighScores";
     
     private static final int HIGH_SCORES_CAPACITY = 16;
     private static final int NUM_HIGH_SCORES = 10;
@@ -70,24 +69,36 @@ public final class HighScores {
     private void saveHighScores() {
         for (int i = 0; i < NUM_HIGH_SCORES; i++) {
             HighScore highScore = mHighScores.get(i);
-            String name = getScoreName(i);
-            if (name == null || name.equals("")) {
-                name = DEFAULT_NAME;
-            }
-            int score = getScoreValue(i);
-            
-            HighScore highScore = new HighScore(name, score, 0l);
-            mHighScores.add(highScore);
+            putScoreName(i, highScore.getName());
+            putScoreValue(i, highScore.getScore());
         }
     }
     
     private String getScoreName(int scoreIndex) {
-        String key = String.format("ScoreName%02d", scoreIndex + 1);
+        String key = getScoreNameKey(scoreIndex);
         return mPreferences.getString(key);
     }
     
+    private void putScoreName(int scoreIndex, String scoreName) {
+        String key = getScoreNameKey(scoreIndex);
+        mPreferences.putString(key, scoreName);
+    }
+    
+    private String getScoreNameKey(int scoreIndex) {
+        return String.format("ScoreName%02d", scoreIndex + 1);
+    }
+    
     private int getScoreValue(int scoreIndex) {
-        String key = String.format("ScoreValue%02d", scoreIndex + 1);
+        String key = getScoreValueKey(scoreIndex);
         return mPreferences.getInteger(key);
+    }
+    
+    private void putScoreValue(int scoreIndex, int scoreValue) {
+        String key = getScoreValueKey(scoreIndex);
+        mPreferences.putInteger(key, scoreValue);
+    }
+    
+    private String getScoreValueKey(int scoreIndex) {
+        return String.format("ScoreValue%02d", scoreIndex + 1);
     }
 }
