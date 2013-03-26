@@ -23,26 +23,27 @@
  */
 package com.turbogerm.suchyblocks;
 
-public final class GameData {
+public final class HighScore {
     
-    private int mScore;
+    private final String mName;
+    private final int mScore;
+    private final long mTime;
     
-    private final HighScores mHighScores;
-    
-    public GameData() {
-        mScore = 0;
-        mHighScores = new HighScores();
+    public HighScore(String name, int score, long time) {
+        mName = name;
+        mScore = score;
+        mTime = time;
     }
     
-    public void dispose() {
-        mHighScores.save();
+    public String getName() {
+        return mName;
     }
     
     public int getScore() {
         return mScore;
     }
     
-    public void setScore(int score) {
-        mScore = score;
-    }
+    public long getTime() {
+        return mTime;
+    }    
 }
