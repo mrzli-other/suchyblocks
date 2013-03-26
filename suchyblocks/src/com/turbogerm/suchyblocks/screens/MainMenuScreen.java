@@ -25,49 +25,81 @@ package com.turbogerm.suchyblocks.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
 
 public final class MainMenuScreen extends ScreenBase {
     
-    private static final float BUTTON_WIDTH = SuchyBlocks.VIEWPORT_WIDTH * 0.8f;
-    private static final float BUTTON_HEIGHT = SuchyBlocks.VIEWPORT_HEIGHT * 0.1f;
-    private static final float BUTTON_PADDING = SuchyBlocks.VIEWPORT_HEIGHT * 0.1f;
+    private static final float BUTTON_WIDTH = 360.0f;
+    private static final float BUTTON_HEIGHT = 80.0f;
+    private static final float BUTTON_PADDING = 80.0f;
+    
+    private final Texture mBackgroundTexture;
     
     public MainMenuScreen(SuchyBlocks game) {
         super(game);
         
         mGuiStage.addListener(getStageInputListener());
         
+        mBackgroundTexture = mAssetManager.get(ResourceNames.GUI_BACKGROUND_TEXTURE);
+        
         TextButtonStyle menuTextButtonStyle = new TextButtonStyle(mGuiSkin.get(TextButtonStyle.class));
-        menuTextButtonStyle.font = mResources.getFont("xxxl");
+        menuTextButtonStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class); //mResources.getFont("xxxl");
         
-        TextButton startButton = new TextButton("START", mGuiSkin);
-        startButton.setStyle(menuTextButtonStyle);
+        // menu buttons
+        final float buttonX = (SuchyBlocks.VIEWPORT_WIDTH - BUTTON_WIDTH) / 2.0f;
+        final float firstButtonY = 520.0f;
+        final float buttonVerticalStride = BUTTON_HEIGHT + BUTTON_PADDING;
+        
+        TextureRegion startUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_START_UP_TEXTURE));
+        Drawable startUpDrawable = new TextureRegionDrawable(startUpTextureRegion);
+        TextureRegion startDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_START_DOWN_TEXTURE));
+        Drawable startDownDrawable = new TextureRegionDrawable(startDownTextureRegion);
+        ImageButton startButton = new ImageButton(startUpDrawable, startDownDrawable);
+        startButton.setBounds(buttonX, firstButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
         startButton.addListener(getStartInputListener(startButton));
+        mGuiStage.addActor(startButton);
         
-        TextButton highScoreButton = new TextButton("HIGH SCORE", mGuiSkin);
-        highScoreButton.setStyle(menuTextButtonStyle);
-        highScoreButton.addListener(getHighScoreListener(highScoreButton));
+        TextureRegion highScoreUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_HIGH_SCORE_UP_TEXTURE));
+        Drawable highScoreUpDrawable = new TextureRegionDrawable(highScoreUpTextureRegion);
+        TextureRegion highScoreDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_HIGH_SCORE_DOWN_TEXTURE));
+        Drawable highScoreDownDrawable = new TextureRegionDrawable(highScoreDownTextureRegion);
+        ImageButton highScoreButton = new ImageButton(highScoreUpDrawable, highScoreDownDrawable);
+        highScoreButton.setBounds(buttonX, firstButtonY - 1.0f * buttonVerticalStride, BUTTON_WIDTH, BUTTON_HEIGHT);
+        highScoreButton.addListener(getHighScoreInputListener(highScoreButton));
+        mGuiStage.addActor(highScoreButton);
         
-        TextButton infoButton = new TextButton("INFO", mGuiSkin);
-        infoButton.setStyle(menuTextButtonStyle);
-        infoButton.addListener(getCreditsListener(infoButton));
-        
-        Table table = new Table();
-        table.setFillParent(true);
-        table.add(startButton).width(BUTTON_WIDTH).height(BUTTON_HEIGHT).padBottom(BUTTON_PADDING);
-        table.row();
-        table.add(highScoreButton).width(BUTTON_WIDTH).height(BUTTON_HEIGHT).padBottom(BUTTON_PADDING);
-        table.row();
-        table.add(infoButton).width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-        
-        mGuiStage.addActor(table);
+        TextureRegion infoUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_INFO_UP_TEXTURE));
+        Drawable infoUpDrawable = new TextureRegionDrawable(infoUpTextureRegion);
+        TextureRegion infoDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_INFO_DOWN_TEXTURE));
+        Drawable infoDownDrawable = new TextureRegionDrawable(infoDownTextureRegion);
+        ImageButton infoButton = new ImageButton(infoUpDrawable, infoDownDrawable);
+        infoButton.setBounds(buttonX, firstButtonY - 2.0f * buttonVerticalStride, BUTTON_WIDTH, BUTTON_HEIGHT);
+        infoButton.addListener(getInfoInputListener(infoButton));
+        mGuiStage.addActor(infoButton);
+    }
+    
+    @Override
+    public void renderImpl(float delta) {
+        mBatch.begin();
+        mBatch.draw(mBackgroundTexture, 0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
+        mBatch.end();
     }
     
     private InputListener getStageInputListener() {
@@ -102,7 +134,7 @@ public final class MainMenuScreen extends ScreenBase {
         };
     }
     
-    private InputListener getHighScoreListener(final Actor actor) {
+    private InputListener getHighScoreInputListener(final Actor actor) {
         return new InputListener() {
             
             @Override
@@ -119,7 +151,7 @@ public final class MainMenuScreen extends ScreenBase {
         };
     }
     
-    private InputListener getCreditsListener(final Actor actor) {
+    private InputListener getInfoInputListener(final Actor actor) {
         return new InputListener() {
             
             @Override

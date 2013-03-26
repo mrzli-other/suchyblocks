@@ -27,20 +27,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 
-public final class HighScores {
+public final class HighScoresData {
     
     private static final String PREFERENCES_NAME = "SuchyBlocks_HighScores";
     
-    private static final int HIGH_SCORES_CAPACITY = 16;
-    private static final int NUM_HIGH_SCORES = 10;
+    private static final int HIGH_SCORES_CAPACITY = 24;
+    private static final int NUM_HIGH_SCORES = 20;
     
     private static final String DEFAULT_NAME = "<No_Name>";
     
-    private final Array<HighScore> mHighScores;
+    private final Array<HighScoreData> mHighScores;
     private final Preferences mPreferences;
     
-    public HighScores() {
-        mHighScores = new Array<HighScore>(true, HIGH_SCORES_CAPACITY);
+    public HighScoresData() {
+        mHighScores = new Array<HighScoreData>(true, HIGH_SCORES_CAPACITY);
         
         mPreferences = Gdx.app.getPreferences(PREFERENCES_NAME);
         loadHighScores();
@@ -61,14 +61,14 @@ public final class HighScores {
             }
             int score = getScoreValue(i);
             
-            HighScore highScore = new HighScore(name, score, 0l);
+            HighScoreData highScore = new HighScoreData(name, score, 0l);
             mHighScores.add(highScore);
         }
     }
     
     private void saveHighScores() {
         for (int i = 0; i < NUM_HIGH_SCORES; i++) {
-            HighScore highScore = mHighScores.get(i);
+            HighScoreData highScore = mHighScores.get(i);
             putScoreName(i, highScore.getName());
             putScoreValue(i, highScore.getScore());
         }
@@ -100,5 +100,9 @@ public final class HighScores {
     
     private String getScoreValueKey(int scoreIndex) {
         return String.format("ScoreValue%02d", scoreIndex + 1);
+    }
+    
+    public Array<HighScoreData> getHighScores() {
+        return mHighScores;
     }
 }

@@ -65,7 +65,6 @@ public abstract class ScreenBase implements Screen {
     
     protected Color mClearColor;
     
-    
     public ScreenBase(SuchyBlocks game) {
         mGame = game;
         mResources = mGame.getResources();
@@ -104,13 +103,13 @@ public abstract class ScreenBase implements Screen {
         
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        renderScene(delta);
+        renderImpl(delta);
         
         mGuiStage.act(delta);
         mGuiStage.draw();
     }
     
-    public void renderScene(float delta) {
+    public void renderImpl(float delta) {
     }
     
     @Override

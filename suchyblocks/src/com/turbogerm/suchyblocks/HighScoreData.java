@@ -23,13 +23,13 @@
  */
 package com.turbogerm.suchyblocks;
 
-public final class HighScore {
+public final class HighScoreData {
     
     private final String mName;
     private final int mScore;
     private final long mTime;
     
-    public HighScore(String name, int score, long time) {
+    public HighScoreData(String name, int score, long time) {
         mName = name;
         mScore = score;
         mTime = time;

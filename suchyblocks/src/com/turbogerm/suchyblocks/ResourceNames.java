@@ -31,6 +31,16 @@ public final class ResourceNames {
     public static final String GUI_BACKGROUND_TEXTURE = GUI_DIR + "background.png";
     public static final String GUI_GAME_AREA_BORDER_TEXTURE = GUI_DIR + "gameareaborder.png";
     public static final String GUI_GAME_AREA_BACKGROUND_TEXTURE = GUI_DIR + "gameareabackground.png";
+    public static final String GUI_MAIN_MENU_START_UP_TEXTURE = GUI_DIR + "mainmenustartup.png";
+    public static final String GUI_MAIN_MENU_START_DOWN_TEXTURE = GUI_DIR + "mainmenustartdown.png";
+    public static final String GUI_MAIN_MENU_HIGH_SCORE_UP_TEXTURE = GUI_DIR + "mainmenuhighscoreup.png";
+    public static final String GUI_MAIN_MENU_HIGH_SCORE_DOWN_TEXTURE = GUI_DIR + "mainmenuhighscoredown.png";
+    public static final String GUI_MAIN_MENU_INFO_UP_TEXTURE = GUI_DIR + "mainmenuinfoup.png";
+    public static final String GUI_MAIN_MENU_INFO_DOWN_TEXTURE = GUI_DIR + "mainmenuinfodown.png";
+    public static final String GUI_BUTTON_BACK_UP_TEXTURE = GUI_DIR + "buttonbackup.png";
+    public static final String GUI_BUTTON_BACK_DOWN_TEXTURE = GUI_DIR + "buttonbackdown.png";
+    public static final String GUI_BUTTON_CONTINUE_UP_TEXTURE = GUI_DIR + "buttoncontinueup.png";
+    public static final String GUI_BUTTON_CONTINUE_DOWN_TEXTURE = GUI_DIR + "buttoncontinuedown.png";
     public static final String GUI_LEFT_UP_TEXTURE = GUI_DIR + "leftup.png";
     public static final String GUI_LEFT_DOWN_TEXTURE = GUI_DIR + "leftdown.png";
     public static final String GUI_RIGHT_UP_TEXTURE = GUI_DIR + "rightup.png";

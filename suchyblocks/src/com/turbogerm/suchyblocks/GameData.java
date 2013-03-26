@@ -27,15 +27,15 @@ public final class GameData {
     
     private int mScore;
     
-    private final HighScores mHighScores;
+    private final HighScoresData mHighScoresData;
     
     public GameData() {
         mScore = 0;
-        mHighScores = new HighScores();
+        mHighScoresData = new HighScoresData();
     }
     
     public void dispose() {
-        mHighScores.save();
+        mHighScoresData.save();
     }
     
     public int getScore() {
@@ -44,5 +44,9 @@ public final class GameData {
     
     public void setScore(int score) {
         mScore = score;
+    }
+    
+    public HighScoresData getHighScoresData() {
+        return mHighScoresData;
     }
 }
