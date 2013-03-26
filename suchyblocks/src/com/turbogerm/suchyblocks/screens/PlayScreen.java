@@ -250,12 +250,16 @@ public final class PlayScreen extends ScreenBase {
     private InputListener getStageInputListener() {
         return new InputListener() {
             
-            private static final float SOFT_DROP_THRESHOLD = 200.0f;
-            private static final float MOVE_THRESHOLD = 10.0f;
-            private static final float HORIZONTAL_MOVE_STEP = 40.0f;
+            private static final float ROTATE_STEP = 50.0f;
+            private static final float SOFT_DROP_THRESHOLD = 120.0f;
+            private static final float HORIZONTAL_MOVE_STEP = 30.0f;
             
-            private boolean mGameAreaLeftPressed = false;
+            private boolean mIsActionInProgress = false;
             private Vector2 mInitialTouchPoint = new Vector2();
+            private boolean mIsHorizontalMovementStarted = false;
+            private float mLastHorizontalMovementX = 0.0f;
+            private boolean mIsRotateStarted = false;
+            private float mLastRotateY = 0.0f;
             
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -309,7 +313,12 @@ public final class PlayScreen extends ScreenBase {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Buttons.LEFT && mGameArea.getGameAreaRectangle().contains(x, y)) {
-                    mGameAreaLeftPressed = true;
+                    if (mGameArea.isSoftDrop()) {
+                        mGameArea.setSoftDrop(false);
+                    }
+                    mIsActionInProgress = true;
+                    mIsHorizontalMovementStarted = false;
+                    mIsRotateStarted = false;
                     mInitialTouchPoint.set(x, y);
                     return true;
                 }
@@ -319,35 +328,55 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (mGameAreaLeftPressed) {
+                if (mIsActionInProgress) {
+                    if (!mIsHorizontalMovementStarted && !mIsRotateStarted) {
+                        float diffX = x - mInitialTouchPoint.x;
+                        float diffY = y - mInitialTouchPoint.y;
+                        float absX = Math.abs(diffX);
+                        float absY = Math.abs(diffY);
+                        
+                        if (absX >= absY) {
+                            if (absX >= HORIZONTAL_MOVE_STEP) {
+                                mIsHorizontalMovementStarted = true;
+                                mLastHorizontalMovementX = mInitialTouchPoint.x;
+                                handleHorizontalMovement(x);
+                            }
+                        } else {
+                            if (diffY >= ROTATE_STEP) {
+                                mIsRotateStarted = true;
+                                mLastRotateY = mInitialTouchPoint.y;
+                                handleRotate(y);
+                            } else if (diffY <= -SOFT_DROP_THRESHOLD) {
+                                mGameArea.setSoftDrop(true);
+                                mIsActionInProgress = false;
+                            }
+                        }
+                    } else if (mIsHorizontalMovementStarted) {
+                        handleHorizontalMovement(x);
+                    } else if (mIsRotateStarted) {
+                        handleRotate(y);
+                    }
                     return;
                 }
             }
             
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (mGameAreaLeftPressed) {
-                    float diffX = x - mInitialTouchPoint.x;
-                    float diffY = y - mInitialTouchPoint.y;
-                    float absX = Math.abs(diffX);
-                    float absY = Math.abs(diffY);
-                    
-                    if (absX < MOVE_THRESHOLD && absY < MOVE_THRESHOLD) {
-                        if (mGameArea.isSoftDrop()) {
-                            mGameArea.setSoftDrop(false);
-                        } else {
-                            mGameArea.rotate();
-                        }
-                    } else if (diffY <= -SOFT_DROP_THRESHOLD && absY >= absX) {
-                        mGameArea.setSoftDrop(true);
-                    } else {
-                        int distance = (int) (diffX / HORIZONTAL_MOVE_STEP);
-                        if (distance != 0) {
-                            mGameArea.moveHorizontal(distance);
-                        }
-                    }
-                    
-                    mGameAreaLeftPressed = false;
+            private void handleHorizontalMovement(float x) {
+                float diffX = x - mLastHorizontalMovementX;
+                
+                int distance = (int) (diffX / HORIZONTAL_MOVE_STEP);
+                if (distance != 0) {
+                    mGameArea.moveHorizontal(distance);
+                    mLastHorizontalMovementX += distance * HORIZONTAL_MOVE_STEP;
+                }
+            }
+            
+            private void handleRotate(float y) {
+                float diffY = y - mLastRotateY;
+                
+                int change = (int) (diffY / ROTATE_STEP);
+                if (change != 0) {
+                    mGameArea.rotate(change);
+                    mLastRotateY += change * ROTATE_STEP;
                 }
             }
         };

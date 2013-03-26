@@ -136,7 +136,7 @@ public final class GameArea {
         if (mIsRotating) {
             mRotatingCountdown -= delta;
             if (mRotatingCountdown <= 0.0f) {
-                rotate();
+                rotate(1);
                 mRotatingCountdown += REPEAT_INTERVAL;
             }
         }
@@ -213,7 +213,7 @@ public final class GameArea {
     }
     
     public void startRotate() {
-        rotate();
+        rotate(1);
         mIsRotating = true;
         mRotatingCountdown = REPEAT_START_OFFSET;
     }
@@ -223,9 +223,9 @@ public final class GameArea {
         mRotatingCountdown = 0.0f;
     }
     
-    public void rotate() {
+    public void rotate(int change) {
         if (mActiveTetromino >= 0) {
-            getActiveTetromino().rotate(mGameAreaSquares);
+            getActiveTetromino().rotate(change, mGameAreaSquares);
         }
     }
     
@@ -278,7 +278,7 @@ public final class GameArea {
     private void setLines(int lines) {
         mLines = lines;
         mLevel = 1 + mLines / 10;
-        mSpeed = 2.0f + (mLevel - 1) * 0.5f;
+        mSpeed = 1.5f + (mLevel - 1) * 0.25f;
         mSpeed = Math.min(mSpeed, SOFT_DROP_SPEED);
     }
     

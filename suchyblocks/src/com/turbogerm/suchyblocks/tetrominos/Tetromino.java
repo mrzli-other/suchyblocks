@@ -85,8 +85,7 @@ public final class Tetromino {
         }
     }
     
-    public void rotate(int[][] gameAreaSquares) {
-        int change = 1;
+    public void rotate(int change, int[][] gameAreaSquares) {
         if (!canRotate(change, gameAreaSquares)) {
             return;
         }
