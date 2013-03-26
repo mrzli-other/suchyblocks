@@ -164,7 +164,7 @@ public final class PlayScreen extends ScreenBase {
                 (Texture) mAssetManager.get(ResourceNames.GUI_RIGHT_DOWN_TEXTURE));
         Drawable rightDownDrawable = new TextureRegionDrawable(rightDownTextureRegion);
         mRightButton = new GameControlButton(rightUpDrawable, rightDownDrawable);
-        mRightButton.setBounds(CONTROL_BUTTON_PADDING + 3.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+        mRightButton.setBounds(CONTROL_BUTTON_PADDING + 1.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
         mRightButton.addListener(getRightInputListener());
         mGuiStage.addActor(mRightButton);
@@ -176,7 +176,7 @@ public final class PlayScreen extends ScreenBase {
                 (Texture) mAssetManager.get(ResourceNames.GUI_ROTATE_DOWN_TEXTURE));
         Drawable rotateDownDrawable = new TextureRegionDrawable(rotateDownTextureRegion);
         mRotateButton = new GameControlButton(rotateUpDrawable, rotateDownDrawable);
-        mRotateButton.setBounds(CONTROL_BUTTON_PADDING + 1.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+        mRotateButton.setBounds(CONTROL_BUTTON_PADDING + 2.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
         mRotateButton.addListener(getRotateInputListener());
         mGuiStage.addActor(mRotateButton);
@@ -188,7 +188,7 @@ public final class PlayScreen extends ScreenBase {
                 (Texture) mAssetManager.get(ResourceNames.GUI_DOWN_DOWN_TEXTURE));
         Drawable downDownDrawable = new TextureRegionDrawable(downDownTextureRegion);
         mDownButton = new GameControlButton(downUpDrawable, downDownDrawable);
-        mDownButton.setBounds(CONTROL_BUTTON_PADDING + 2.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
+        mDownButton.setBounds(CONTROL_BUTTON_PADDING + 3.0f * controlButtonStride, CONTROL_BUTTON_PADDING,
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
         mDownButton.addListener(getDownInputListener());
         mGuiStage.addActor(mDownButton);
