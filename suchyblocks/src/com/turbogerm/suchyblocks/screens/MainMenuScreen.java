@@ -40,10 +40,6 @@ import com.turbogerm.suchyblocks.SuchyBlocks;
 
 public final class MainMenuScreen extends ScreenBase {
     
-    private static final float BUTTON_WIDTH = 360.0f;
-    private static final float BUTTON_HEIGHT = 80.0f;
-    private static final float BUTTON_PADDING = 80.0f;
-    
     private final Texture mBackgroundTexture;
     
     public MainMenuScreen(SuchyBlocks game) {
@@ -57,9 +53,13 @@ public final class MainMenuScreen extends ScreenBase {
         menuTextButtonStyle.font = mGuiSkin.get("xxxl-font", BitmapFont.class); //mResources.getFont("xxxl");
         
         // menu buttons
-        final float buttonX = (SuchyBlocks.VIEWPORT_WIDTH - BUTTON_WIDTH) / 2.0f;
+        final float buttonWidth = 360.0f; 
+        final float buttonHeight = 80.0f; 
+        final float buttonPadding = 80.0f;
+        
+        final float buttonX = (SuchyBlocks.VIEWPORT_WIDTH - buttonWidth) / 2.0f;
         final float firstButtonY = 520.0f;
-        final float buttonVerticalStride = BUTTON_HEIGHT + BUTTON_PADDING;
+        final float buttonVerticalStride = buttonHeight + buttonPadding;
         
         TextureRegion startUpTextureRegion = new TextureRegion(
                 (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_START_UP_TEXTURE));
@@ -68,7 +68,7 @@ public final class MainMenuScreen extends ScreenBase {
                 (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_START_DOWN_TEXTURE));
         Drawable startDownDrawable = new TextureRegionDrawable(startDownTextureRegion);
         ImageButton startButton = new ImageButton(startUpDrawable, startDownDrawable);
-        startButton.setBounds(buttonX, firstButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+        startButton.setBounds(buttonX, firstButtonY, buttonWidth, buttonHeight);
         startButton.addListener(getStartInputListener(startButton));
         mGuiStage.addActor(startButton);
         
@@ -79,7 +79,7 @@ public final class MainMenuScreen extends ScreenBase {
                 (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_HIGH_SCORE_DOWN_TEXTURE));
         Drawable highScoreDownDrawable = new TextureRegionDrawable(highScoreDownTextureRegion);
         ImageButton highScoreButton = new ImageButton(highScoreUpDrawable, highScoreDownDrawable);
-        highScoreButton.setBounds(buttonX, firstButtonY - 1.0f * buttonVerticalStride, BUTTON_WIDTH, BUTTON_HEIGHT);
+        highScoreButton.setBounds(buttonX, firstButtonY - 1.0f * buttonVerticalStride, buttonWidth, buttonHeight);
         highScoreButton.addListener(getHighScoreInputListener(highScoreButton));
         mGuiStage.addActor(highScoreButton);
         
@@ -90,7 +90,7 @@ public final class MainMenuScreen extends ScreenBase {
                 (Texture) mAssetManager.get(ResourceNames.GUI_MAIN_MENU_INFO_DOWN_TEXTURE));
         Drawable infoDownDrawable = new TextureRegionDrawable(infoDownTextureRegion);
         ImageButton infoButton = new ImageButton(infoUpDrawable, infoDownDrawable);
-        infoButton.setBounds(buttonX, firstButtonY - 2.0f * buttonVerticalStride, BUTTON_WIDTH, BUTTON_HEIGHT);
+        infoButton.setBounds(buttonX, firstButtonY - 2.0f * buttonVerticalStride, buttonWidth, buttonHeight);
         infoButton.addListener(getInfoInputListener(infoButton));
         mGuiStage.addActor(infoButton);
     }

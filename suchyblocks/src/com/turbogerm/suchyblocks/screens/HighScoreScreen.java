@@ -24,20 +24,27 @@
 package com.turbogerm.suchyblocks.screens;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.turbogerm.suchyblocks.HighScoreData;
+import com.turbogerm.suchyblocks.ResourceNames;
 import com.turbogerm.suchyblocks.SuchyBlocks;
 
 public final class HighScoreScreen extends ScreenBase {
     
     private static final float HIGH_SCORE_PADDING = 10.0f;
-    private static final float HIGH_SCORE_HEIGHT = 36.0f;
+    private static final float HIGH_SCORE_HEIGHT = 35.0f;
     private static final float HIGH_SCORE_INDEX_WIDTH = 30.0f;
     private static final float HIGH_SCORE_NAME_WIDTH = 240.0f;
     private static final float HIGH_SCORE_VALUE_WIDTH =
@@ -52,20 +59,13 @@ public final class HighScoreScreen extends ScreenBase {
         super(game);
         
         mGuiStage.addListener(getStageInputListener(this));
-        
-        LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
-        labelStyle.font = mGuiSkin.get("large-font", BitmapFont.class); // mResources.getFont("medium");
-        
-        // Label highScoreLabel = new Label("HIGH SCORE", mGuiSkin);
-        // highScoreLabel.setBounds(0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
-        // highScoreLabel.setStyle(labelStyle);
-        // highScoreLabel.setAlignment(Align.center);
-        // mGuiStage.addActor(highScoreLabel);
     }
     
     @Override
     public void show() {
         super.show();
+        
+        mGuiStage.clear();
         
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
         labelStyle.font = mGuiSkin.get("large-font", BitmapFont.class); // mResources.getFont("medium");
@@ -93,6 +93,22 @@ public final class HighScoreScreen extends ScreenBase {
             highScoreValueLabel.setAlignment(Align.right);
             mGuiStage.addActor(highScoreValueLabel);
         }
+        
+        final float buttonWidth = 360.0f; 
+        final float buttonHeight = 80.0f; 
+        final float buttonX = (SuchyBlocks.VIEWPORT_WIDTH - buttonWidth) / 2.0f;
+        final float buttonY = 10.0f;
+        
+        TextureRegion backUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_BUTTON_BACK_UP_TEXTURE));
+        Drawable backUpDrawable = new TextureRegionDrawable(backUpTextureRegion);
+        TextureRegion backDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_BUTTON_BACK_DOWN_TEXTURE));
+        Drawable backDownDrawable = new TextureRegionDrawable(backDownTextureRegion);
+        ImageButton backButton = new ImageButton(backUpDrawable, backDownDrawable);
+        backButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+        backButton.addListener(getBackInputListener(backButton));
+        mGuiStage.addActor(backButton);
     }
     
     private static InputListener getStageInputListener(final HighScoreScreen screen) {
@@ -107,6 +123,23 @@ public final class HighScoreScreen extends ScreenBase {
                 }
                 
                 return false;
+            }
+        };
+    }
+    
+    private InputListener getBackInputListener(final Actor actor) {
+        return new InputListener() {
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (actor.hit(x, y, true) != null) {
+                    mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
+                }
             }
         };
     }

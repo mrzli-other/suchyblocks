@@ -51,6 +51,28 @@ public final class HighScoresData {
         mPreferences.flush();
     }
     
+    public int getPlaceForScore(int score) {
+        for (int i = 0; i < NUM_HIGH_SCORES; i++) {
+            if (score > mHighScores.get(i).getScore()) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+    
+    public void insertHighScore(String name, int score) {
+        int scorePlace = getPlaceForScore(score);
+        if (scorePlace < 0) {
+            return;
+        }
+        
+        HighScoreData highScore = new HighScoreData(name, score, 0l);
+        mHighScores.insert(scorePlace, highScore);
+        mHighScores.truncate(NUM_HIGH_SCORES);
+        save();
+    }
+    
     private void loadHighScores() {
         mHighScores.clear();
         
