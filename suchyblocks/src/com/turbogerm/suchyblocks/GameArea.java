@@ -55,7 +55,7 @@ public final class GameArea {
     private final Texture[] mSquareTextures;
     private final Tetromino[] mTetrominos;
     
-    private final Texture[] mEmtpySquareTextures;
+    private final Texture[] mEmptySquareTextures;
     
     private int mActiveTetromino;
     
@@ -90,10 +90,7 @@ public final class GameArea {
         mGameAreaRectangle = new Rectangle(mGameAreaPosition.x, mGameAreaPosition.y,
                 GAME_AREA_COLUMNS * SQUARE_SIZE, GAME_AREA_ROWS * SQUARE_SIZE);
         
-        mSquareTextures = new Texture[Tetromino.COUNT];
-        for (int i = 0; i < Tetromino.COUNT; i++) {
-            mSquareTextures[i] = mAssetManager.get(Tetromino.getTexturePath(i));
-        }
+        mSquareTextures = getSquareTextures(mAssetManager);
         
         IntPair[][][] tetrominoRotations = TetrominoRotationsReader.read(
                 Gdx.files.internal(ResourceNames.TETROMINO_ROTATIONS_DATA));
@@ -102,9 +99,9 @@ public final class GameArea {
             mTetrominos[i] = new Tetromino(tetrominoRotations[i], mSquareTextures[i], i);
         }
         
-        mEmtpySquareTextures = new Texture[2];
-        mEmtpySquareTextures[0] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_1_TEXTURE);
-        mEmtpySquareTextures[1] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_2_TEXTURE);
+        mEmptySquareTextures = new Texture[2];
+        mEmptySquareTextures[0] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_1_TEXTURE);
+        mEmptySquareTextures[1] = mAssetManager.get(ResourceNames.SQUARES_EMPTY_2_TEXTURE);
         
         mGameAreaSquares = new int[GAME_AREA_ROWS][GAME_AREA_COLUMNS];
         
@@ -186,7 +183,7 @@ public final class GameArea {
                     mBatch.draw(mSquareTextures[squareIndex],
                             squareX, squareY, SQUARE_SIZE, SQUARE_SIZE);
                 } else {
-                    mBatch.draw(mEmtpySquareTextures[(i + j) % 2],
+                    mBatch.draw(mEmptySquareTextures[(i + j) % 2],
                             squareX, squareY, SQUARE_SIZE, SQUARE_SIZE);
                 }
             }
@@ -202,7 +199,7 @@ public final class GameArea {
             float squareY = i * squareSize + position.y;
             for (int j = 0; j < 4; j++) {
                 float squareX = j * squareSize + position.x;
-                mBatch.draw(mEmtpySquareTextures[(i + j) % 2],
+                mBatch.draw(mEmptySquareTextures[(i + j) % 2],
                         squareX, squareY, squareSize, squareSize);
             }
         }
@@ -379,5 +376,14 @@ public final class GameArea {
     
     public boolean isGameOver() {
         return mIsGameOver;
+    }
+    
+    public static Texture[] getSquareTextures(AssetManager assetManager) {
+        Texture[] squareTextures = new Texture[Tetromino.COUNT];
+        for (int i = 0; i < Tetromino.COUNT; i++) {
+            squareTextures[i] = assetManager.get(Tetromino.getTexturePath(i));
+        }
+        
+        return squareTextures;
     }
 }

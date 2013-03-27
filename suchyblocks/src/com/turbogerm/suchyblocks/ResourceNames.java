@@ -27,7 +27,7 @@ public final class ResourceNames {
     
     public static final String GUI_DIR = "gui/";
     public static final String GUI_SKIN = GUI_DIR + "uiskin.json";
-    public static final String GUI_SPLASH_TEXTURE = GUI_DIR + "splash.png";
+    public static final String GUI_BLACK_TEXTURE = GUI_DIR + "black.png";
     public static final String GUI_BACKGROUND_TEXTURE = GUI_DIR + "background.png";
     public static final String GUI_GAME_AREA_BORDER_TEXTURE = GUI_DIR + "gameareaborder.png";
     public static final String GUI_GAME_AREA_BACKGROUND_TEXTURE = GUI_DIR + "gameareabackground.png";
@@ -66,4 +66,6 @@ public final class ResourceNames {
     
     public static final String DATA_DIR = "data/";
     public static final String TETROMINO_ROTATIONS_DATA = DATA_DIR + "tetrominorotations.txt";
+    public static final String SUCHY_SPLASH_SQUARES_DATA = DATA_DIR + "suchysplashsquares.txt";
+    public static final String BLOCKS_SPLASH_SQUARES_DATA = DATA_DIR + "blockssplashsquares.txt";
 }

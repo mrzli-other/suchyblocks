@@ -44,7 +44,7 @@ public final class Resources {
         textureParameter.magFilter = TextureFilter.Linear;
         textureParameter.genMipMaps = true;
         
-        mAssetManager.load(ResourceNames.GUI_SPLASH_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_BLACK_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_BACKGROUND_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_GAME_AREA_BORDER_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_GAME_AREA_BACKGROUND_TEXTURE, Texture.class, textureParameter);
