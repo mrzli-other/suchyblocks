@@ -49,6 +49,14 @@ public final class ResourceNames {
     public static final String GUI_DOWN_DOWN_TEXTURE = GUI_DIR + "downdown.png";
     public static final String GUI_ROTATE_UP_TEXTURE = GUI_DIR + "rotateup.png";
     public static final String GUI_ROTATE_DOWN_TEXTURE = GUI_DIR + "rotatedown.png";
+    public static final String GUI_KEYBOARD_UP_TEXTURE = GUI_DIR + "keyboardup.png";
+    public static final String GUI_KEYBOARD_DOWN_TEXTURE = GUI_DIR + "keyboarddown.png";
+    public static final String GUI_KEYBOARD_LEFT_TEXTURE = GUI_DIR + "keyboardleft.png";
+    public static final String GUI_KEYBOARD_RIGHT_TEXTURE = GUI_DIR + "keyboardright.png";
+    public static final String GUI_DRAG_UP_TEXTURE = GUI_DIR + "dragup.png";
+    public static final String GUI_DRAG_DOWN_TEXTURE = GUI_DIR + "dragdown.png";
+    public static final String GUI_DRAG_LEFT_TEXTURE = GUI_DIR + "dragleft.png";
+    public static final String GUI_DRAG_RIGHT_TEXTURE = GUI_DIR + "dragright.png";
     
     public static final String FONTS_DIR = GUI_DIR + "fonts/";
     public static final String ARIAL_BOLD_FONT = FONTS_DIR + "arialbd.ttf";

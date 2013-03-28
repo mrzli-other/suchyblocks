@@ -66,6 +66,14 @@ public final class Resources {
         mAssetManager.load(ResourceNames.GUI_DOWN_DOWN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_ROTATE_UP_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_ROTATE_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_KEYBOARD_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_KEYBOARD_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_KEYBOARD_LEFT_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_KEYBOARD_RIGHT_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_DRAG_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_DRAG_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_DRAG_LEFT_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_DRAG_RIGHT_TEXTURE, Texture.class, textureParameter);
         
         mAssetManager.load(ResourceNames.SQUARES_CYAN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.SQUARES_PURPLE_TEXTURE, Texture.class, textureParameter);
