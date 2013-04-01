@@ -30,8 +30,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -68,6 +71,11 @@ public final class PlayScreen extends ScreenBase {
     private final GameControlButton mRotateButton;
     private final GameControlButton mDownButton;
     
+    private ImageButton mPlayPauseButton;
+    private ImageButtonStyle mPlayButtonStyle;
+    private ImageButtonStyle mPauseButtonStyle;
+    private boolean mIsPaused;
+    
     public PlayScreen(SuchyBlocks game) {
         super(game);
         
@@ -91,7 +99,7 @@ public final class PlayScreen extends ScreenBase {
         
         // labels
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
-        labelStyle.font = mGuiSkin.get("medium-font", BitmapFont.class); //mResources.getFont("medium");
+        labelStyle.font = mGuiSkin.get("medium-font", BitmapFont.class); // mResources.getFont("medium");
         
         final float labelSmallVerticalStride = 30.0f;
         final float labelLargeVerticalStride = 40.0f;
@@ -192,12 +200,16 @@ public final class PlayScreen extends ScreenBase {
                 CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
         mDownButton.addListener(getDownInputListener());
         mGuiStage.addActor(mDownButton);
+        
+        createPlayPauseButton();
+        mGuiStage.addActor(mPlayPauseButton);
     }
     
     @Override
     public void show() {
         super.show();
         mGameArea.reset();
+        setPaused(false);
     }
     
     @Override
@@ -208,7 +220,9 @@ public final class PlayScreen extends ScreenBase {
             mGame.setScreen(SuchyBlocks.GAME_OVER_SCREEN_NAME);
         }
         
-        mGameArea.update(delta);
+        if (!mIsPaused) {
+            mGameArea.update(delta);
+        }
         
         mScoreValueLabel.setText(String.valueOf(mGameArea.getScore()));
         mLinesValueLabel.setText(String.valueOf(mGameArea.getLines()));
@@ -217,22 +231,25 @@ public final class PlayScreen extends ScreenBase {
         mBatch.begin();
         
         mBatch.draw(mBackgroundTexture, 0.0f, 0.0f, SuchyBlocks.VIEWPORT_WIDTH, SuchyBlocks.VIEWPORT_HEIGHT);
-        mBatch.draw(mGameAreaBorderTexture,
-                mGameAreaRectangle.x - GAME_AREA_BORDER_SIZE,
-                mGameAreaRectangle.y - GAME_AREA_BORDER_SIZE,
-                mGameAreaRectangle.width + 2.0f * GAME_AREA_BORDER_SIZE,
-                mGameAreaRectangle.height + 2.0f * GAME_AREA_BORDER_SIZE);
-        mBatch.draw(mGameAreaBackgroundTexture, mGameAreaRectangle.x, mGameAreaRectangle.y,
-                mGameAreaRectangle.width, mGameAreaRectangle.height);
         
-        mGameArea.render();
-        
-        mBatch.draw(mGameAreaBorderTexture,
-                mNextDisplayPosition.x - GAME_AREA_BORDER_SIZE,
-                mNextDisplayPosition.y - GAME_AREA_BORDER_SIZE,
-                NEXT_DISPLAY_SIZE + 2.0f * GAME_AREA_BORDER_SIZE,
-                NEXT_DISPLAY_SIZE + 2.0f * GAME_AREA_BORDER_SIZE);
-        mGameArea.renderNext(mNextDisplayPosition, NEXT_SQUARE_SIZE);
+        if (!mIsPaused) {
+            mBatch.draw(mGameAreaBorderTexture,
+                    mGameAreaRectangle.x - GAME_AREA_BORDER_SIZE,
+                    mGameAreaRectangle.y - GAME_AREA_BORDER_SIZE,
+                    mGameAreaRectangle.width + 2.0f * GAME_AREA_BORDER_SIZE,
+                    mGameAreaRectangle.height + 2.0f * GAME_AREA_BORDER_SIZE);
+            mBatch.draw(mGameAreaBackgroundTexture, mGameAreaRectangle.x, mGameAreaRectangle.y,
+                    mGameAreaRectangle.width, mGameAreaRectangle.height);
+            
+            mGameArea.render();
+            
+            mBatch.draw(mGameAreaBorderTexture,
+                    mNextDisplayPosition.x - GAME_AREA_BORDER_SIZE,
+                    mNextDisplayPosition.y - GAME_AREA_BORDER_SIZE,
+                    NEXT_DISPLAY_SIZE + 2.0f * GAME_AREA_BORDER_SIZE,
+                    NEXT_DISPLAY_SIZE + 2.0f * GAME_AREA_BORDER_SIZE);
+            mGameArea.renderNext(mNextDisplayPosition, NEXT_SQUARE_SIZE);
+        }
         
         mBatch.end();
     }
@@ -243,8 +260,59 @@ public final class PlayScreen extends ScreenBase {
     }
     
     @Override
+    public void pause() {
+        setPaused(true);
+    }
+    
+    @Override
+    public void resume() {
+    }
+    
+    @Override
     public void dispose() {
         super.dispose();
+    }
+    
+    private void togglePause() {
+        setPaused(!mIsPaused);
+    }
+    
+    private void setPaused(boolean isPaused) {
+        mIsPaused = isPaused;
+        if (mIsPaused) {
+            mPlayPauseButton.setStyle(mPlayButtonStyle);
+        } else {
+            mPlayPauseButton.setStyle(mPauseButtonStyle);
+        }
+    }
+    
+    private void createPlayPauseButton() {
+        TextureRegion pauseUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_PAUSE_UP_TEXTURE));
+        Drawable pauseUpDrawable = new TextureRegionDrawable(pauseUpTextureRegion);
+        TextureRegion pauseDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_PAUSE_DOWN_TEXTURE));
+        Drawable pauseDownDrawable = new TextureRegionDrawable(pauseDownTextureRegion);
+        mPauseButtonStyle = new ImageButtonStyle(null, null, null, pauseUpDrawable, pauseDownDrawable, null);
+        
+        TextureRegion playUpTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_PLAY_UP_TEXTURE));
+        Drawable playUpDrawable = new TextureRegionDrawable(playUpTextureRegion);
+        TextureRegion playDownTextureRegion = new TextureRegion(
+                (Texture) mAssetManager.get(ResourceNames.GUI_PLAY_DOWN_TEXTURE));
+        Drawable playDownDrawable = new TextureRegionDrawable(playDownTextureRegion);
+        mPlayButtonStyle = new ImageButtonStyle(null, null, null, playUpDrawable, playDownDrawable, null);
+        
+        mPlayPauseButton = new ImageButton(pauseUpDrawable, pauseDownDrawable);
+        
+        final float leftHorizontalSpace = SuchyBlocks.VIEWPORT_WIDTH - mGameAreaRectangle.width -
+                2.0f * GAME_AREA_BORDER_SIZE;
+        final float pauseButtonSize = 100.0f;
+        final float pauseButtonX = SuchyBlocks.VIEWPORT_WIDTH - leftHorizontalSpace / 2.0f - pauseButtonSize / 2.0f;
+        final float pauseButtonY = 150.0f;
+        mPlayPauseButton.setBounds(pauseButtonX, pauseButtonY, pauseButtonSize, pauseButtonSize);
+        
+        mPlayPauseButton.addListener(getPlayPauseInputListener(mPlayPauseButton));
     }
     
     private InputListener getStageInputListener() {
@@ -266,22 +334,26 @@ public final class PlayScreen extends ScreenBase {
                 if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
                     mGame.setScreen(SuchyBlocks.MAIN_MENU_SCREEN_NAME);
                     return true;
-                } else if (keycode == Keys.UP) {
-                    mGameArea.startRotate();
-                    mRotateButton.setDisplayPressed(true);
-                    return true;
-                } else if (keycode == Keys.LEFT) {
-                    mGameArea.startMoveHorizontal(true);
-                    mLeftButton.setDisplayPressed(true);
-                    return true;
-                } else if (keycode == Keys.RIGHT) {
-                    mGameArea.startMoveHorizontal(false);
-                    mRightButton.setDisplayPressed(true);
-                    return true;
-                } else if (keycode == Keys.DOWN) {
-                    mGameArea.setSoftDrop(true);
-                    mDownButton.setDisplayPressed(true);
-                    return true;
+                } else if (keycode == Keys.P) {
+                    togglePause();
+                } else if (!mIsPaused) {
+                    if (keycode == Keys.UP) {
+                        mGameArea.startRotate();
+                        mRotateButton.setDisplayPressed(true);
+                        return true;
+                    } else if (keycode == Keys.LEFT) {
+                        mGameArea.startMoveHorizontal(true);
+                        mLeftButton.setDisplayPressed(true);
+                        return true;
+                    } else if (keycode == Keys.RIGHT) {
+                        mGameArea.startMoveHorizontal(false);
+                        mRightButton.setDisplayPressed(true);
+                        return true;
+                    } else if (keycode == Keys.DOWN) {
+                        mGameArea.setSoftDrop(true);
+                        mDownButton.setDisplayPressed(true);
+                        return true;
+                    }
                 }
                 
                 return false;
@@ -312,7 +384,7 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button == Buttons.LEFT && mGameArea.getGameAreaRectangle().contains(x, y)) {
+                if (button == Buttons.LEFT && mGameArea.getGameAreaRectangle().contains(x, y) && !mIsPaused) {
                     if (mGameArea.isSoftDrop()) {
                         mGameArea.setSoftDrop(false);
                     }
@@ -387,6 +459,10 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (mIsPaused) {
+                    return false;
+                }
+                
                 mGameArea.startMoveHorizontal(true);
                 return true;
             }
@@ -403,6 +479,10 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (mIsPaused) {
+                    return false;
+                }
+                
                 mGameArea.startMoveHorizontal(false);
                 return true;
             }
@@ -419,6 +499,10 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (mIsPaused) {
+                    return false;
+                }
+                
                 mGameArea.setSoftDrop(true);
                 return true;
             }
@@ -435,6 +519,10 @@ public final class PlayScreen extends ScreenBase {
             
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (mIsPaused) {
+                    return false;
+                }
+                
                 mGameArea.startRotate();
                 return true;
             }
@@ -442,6 +530,24 @@ public final class PlayScreen extends ScreenBase {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 mGameArea.endRotate();
+            }
+        };
+    }
+    
+    private InputListener getPlayPauseInputListener(final Actor actor) {
+        
+        return new InputListener() {
+            
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (actor.hit(x, y, true) != null) {
+                    togglePause();
+                }
             }
         };
     }

@@ -74,6 +74,10 @@ public final class Resources {
         mAssetManager.load(ResourceNames.GUI_DRAG_DOWN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_DRAG_LEFT_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.GUI_DRAG_RIGHT_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_PAUSE_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_PAUSE_DOWN_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_PLAY_UP_TEXTURE, Texture.class, textureParameter);
+        mAssetManager.load(ResourceNames.GUI_PLAY_DOWN_TEXTURE, Texture.class, textureParameter);
         
         mAssetManager.load(ResourceNames.SQUARES_CYAN_TEXTURE, Texture.class, textureParameter);
         mAssetManager.load(ResourceNames.SQUARES_PURPLE_TEXTURE, Texture.class, textureParameter);

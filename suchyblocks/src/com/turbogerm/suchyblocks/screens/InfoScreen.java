@@ -168,15 +168,16 @@ public final class InfoScreen extends ScreenBase {
         dragDropImage.setBounds(controlImage3X, currentControlY, controlImageSize, controlImageSize);
         mGuiStage.addActor(dragDropImage);
         
-        currentControlY -= 2.0f * smallTextHeight + controlPadding;
+        currentControlY -= 3.0f * smallTextHeight + controlPadding;
         
         Label dragDescriptionLabel = new Label(
-                "* Touch/mouse dragging must be done on game area \n(where the blocks fall).", mGuiSkin);
+                "* Touch/mouse dragging must be done on game area \n(where the blocks fall)\n" +
+                        "Pause can be toggled by pressing P.", mGuiSkin);
         dragDescriptionLabel.setBounds(controlPadding, currentControlY, SuchyBlocks.VIEWPORT_WIDTH, titleLabelHeight);
         dragDescriptionLabel.setAlignment(Align.left);
         mGuiStage.addActor(dragDescriptionLabel);
         
-        currentControlY -= titleLabelHeight + 3.0f * controlPadding;
+        currentControlY -= titleLabelHeight + 2.0f * controlPadding;
         
         Label creditsTitleLabel = new Label("Credits", mGuiSkin);
         creditsTitleLabel.setBounds(0.0f, currentControlY, SuchyBlocks.VIEWPORT_WIDTH, titleLabelHeight);
@@ -193,8 +194,8 @@ public final class InfoScreen extends ScreenBase {
         creditsTextLabel.setAlignment(Align.left);
         mGuiStage.addActor(creditsTextLabel);
         
-        final float buttonWidth = 360.0f; 
-        final float buttonHeight = 80.0f; 
+        final float buttonWidth = 360.0f;
+        final float buttonHeight = 80.0f;
         final float buttonX = (SuchyBlocks.VIEWPORT_WIDTH - buttonWidth) / 2.0f;
         final float buttonY = 10.0f;
         
