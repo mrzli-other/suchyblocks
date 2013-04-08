@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class Main {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "SuchyBlocks";
+        cfg.title = "Suchy Blocks";
         cfg.useGL20 = true;
         cfg.height = 800;
         cfg.width = 450;
