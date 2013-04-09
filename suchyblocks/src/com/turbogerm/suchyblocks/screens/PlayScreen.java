@@ -99,7 +99,7 @@ public final class PlayScreen extends ScreenBase {
         
         // labels
         LabelStyle labelStyle = new LabelStyle(mGuiSkin.get(LabelStyle.class));
-        labelStyle.font = mGuiSkin.get("medium-font", BitmapFont.class); // mResources.getFont("medium");
+        labelStyle.font = mGuiSkin.get("large-font", BitmapFont.class); // mResources.getFont("medium");
         
         final float labelSmallVerticalStride = 30.0f;
         final float labelLargeVerticalStride = 40.0f;
