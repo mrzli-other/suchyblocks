@@ -171,7 +171,7 @@ public final class InfoScreen extends ScreenBase {
         currentControlY -= 3.0f * smallTextHeight + controlPadding;
         
         Label dragDescriptionLabel = new Label(
-                "* Touch/mouse dragging must be done on game area \n(where the blocks fall)\n" +
+                "* Touch/mouse dragging must be done on\ngame area (where the blocks fall).\n" +
                         "Pause can be toggled by pressing P.", mGuiSkin);
         dragDescriptionLabel.setBounds(controlPadding, currentControlY, SuchyBlocks.VIEWPORT_WIDTH, titleLabelHeight);
         dragDescriptionLabel.setAlignment(Align.left);
@@ -189,7 +189,8 @@ public final class InfoScreen extends ScreenBase {
         
         Label creditsTextLabel = new Label(
                 "Dedicated to: Marija Suchy :)\n" +
-                        "Created by: Goran Mrzljak (goran.mrzljak@gmail.com)", mGuiSkin);
+                        "Created by: Goran Mrzljak\n" +
+                        "Email: goran.mrzljak@gmail.com", mGuiSkin);
         creditsTextLabel.setBounds(controlPadding, currentControlY, SuchyBlocks.VIEWPORT_WIDTH, titleLabelHeight);
         creditsTextLabel.setAlignment(Align.left);
         mGuiStage.addActor(creditsTextLabel);
